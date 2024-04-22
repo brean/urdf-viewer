@@ -21,8 +21,8 @@
 {#if $robot_urdf}
 <T.Group position={position} quaternion={quaternion}>
   {#each getRootJoints($robot_urdf) as joint}
-    <UrdfJoint 
-      joint={joint}
+    <UrdfJoint
+      {joint}
     />
   {/each}
 </T.Group>
