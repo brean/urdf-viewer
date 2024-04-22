@@ -9,6 +9,7 @@
   import type { IUrdfLink } from "../models/IUrdfLink";
   import type { IUrdfCylinder } from "../models/IUrdfCylinder";
   import type { IUrdfBox } from "../models/IUrdfBox";
+    import selection from "$lib/store/selection";
 
   export let visual:IUrdfVisual;
   export let link: IUrdfLink;
@@ -46,25 +47,25 @@
     <STL
       onclick={onClick}
       filename={mesh.filename}
-      position={position}
-      rotation={rotation}
-      color={color}
-      scale={scale} />
+      {position}
+      {rotation}
+      {color}
+      {scale} />
   {:else if mesh.type === 'dae'}
     <DAE
       onclick={onClick}
       filename={mesh.filename}
-      position={position}
-      rotation={rotation}
-      color={color}
-      scale={scale} />
+      {position}
+      {rotation}
+      {color}
+      {scale} />
   {/if}
 {:else}
 	<T.Mesh castShadow receiveShadow
       scale={scale}
       on:click={onClick}
-      position={position}
-      rotation={rotation}>
+      {position}
+      {rotation}>
     {#if visual.type === 'cylinder'}
       <!-- cylinder are rotated 90° in Three compared to urdf -->
 		  <T.CylinderGeometry 
@@ -73,6 +74,6 @@
     {:else if visual.type === 'box'}
       <T.BoxGeometry />
     {/if}
-		<T.MeshBasicMaterial color={color} />
+		<T.MeshBasicMaterial {color} />
 	</T.Mesh>
 {/if}

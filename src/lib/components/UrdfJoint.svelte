@@ -2,7 +2,6 @@
   import { T } from "@threlte/core";
   import type { IUrdfJoint } from "../models/IUrdfJoint";
   import UrdfVisual from "./UrdfVisual.svelte";
-  import { TransformControls } from "@threlte/extras";
   import robot_urdf from "../store/robot_urdf";
   import { getChildJoints } from "../UrdfParser";
 
