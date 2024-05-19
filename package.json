@@ -16,7 +16,7 @@
 		},
 		"./UrdfParser": {
 			"types": "./dist/UrdfParser.d.ts",
-			"default": "./dist/store/UrdfParser.js"
+			"default": "./dist/UrdfParser.js"
 		},
 		"./robot_urdf": {
 			"types": "./dist/store/robot_urdf.d.ts",
