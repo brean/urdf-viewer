@@ -15,10 +15,12 @@
 			"svelte": "./dist/components/UrdfThree.svelte"
 		},
 		"./UrdfParser": {
-			"types": "./dist/UrdfParser.svelte.d.ts"
+			"types": "./dist/UrdfParser.d.ts",
+			"default": "./dist/store/UrdfParser.js"
 		},
-		"./store/robot_urdf": {
-			"types": "./dist/store/robot_urdf.d.ts"
+		"./robot_urdf": {
+			"types": "./dist/store/robot_urdf.d.ts",
+			"default": "./dist/store/robot_urdf.js"
 		},
 		".": {
 			"types": "./dist/index.d.ts",
