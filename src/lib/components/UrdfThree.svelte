@@ -6,8 +6,8 @@
   import UrdfJoint from './UrdfJoint.svelte';
   import { getRootJoints } from '../UrdfParser';
 
-  export let position: number[] = [0, 0, 0];
-  export let quaternion: number[] | undefined = undefined;
+  export let position: [x: number, y: number, z: number] = [0, 0, 0];
+  export let quaternion: [x: number, y: number, z: number, w:number] | undefined = undefined;
   
   // the axis in Three are different from urdf
   if (!quaternion) {

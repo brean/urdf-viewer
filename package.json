@@ -1,14 +1,29 @@
 {
 	"name": "urdf-viewer",
 	"version": "0.0.1",
-	"private": true,
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"build": "vite build && npm run package",
+		"package": "svelte-kit sync && svelte-package && publint",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
+	"exports": {
+		"./UrdfThree": {
+			"types": "./dist/components/UrdfThree.svelte.d.ts",
+			"svelte": "./dist/components/UrdfThree.svelte"
+		},
+		".": {
+			"types": "./dist/index.d.ts",
+			"svelte": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
 	"dependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-static": "^3.0.1",
@@ -24,5 +39,7 @@
 		"typescript": "^5.0.0",
 		"vite": "^5.0.11"
 	},
+	"svelte": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"type": "module"
 }
