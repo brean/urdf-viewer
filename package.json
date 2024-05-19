@@ -18,7 +18,7 @@
 			"types": "./dist/UrdfParser.svelte.d.ts"
 		},
 		"./store/robot_urdf": {
-			"types": "./dist/store/robot_urdf.svelte.d.ts"
+			"types": "./dist/store/robot_urdf.d.ts"
 		},
 		".": {
 			"types": "./dist/index.d.ts",
