@@ -18,6 +18,10 @@
 			"types": "./dist/UrdfParser.d.ts",
 			"default": "./dist/UrdfParser.js"
 		},
+		"./ThreeStage": {
+			"types": "./dist/components/ThreeStage.d.ts",
+			"default": "./dist/components/ThreeStage.js"
+		},
 		"./robot_urdf": {
 			"types": "./dist/store/robot_urdf.d.ts",
 			"default": "./dist/store/robot_urdf.js"

@@ -1,6 +1,6 @@
 <script lang="ts">
   // Three.js visualisation of a URDF.
-	import { T } from '@threlte/core'
+	import { T } from '@threlte/core';
   import { Quaternion, Vector3 } from 'three';
   import robot_urdf from '../store/robot_urdf';
   import UrdfJoint from './UrdfJoint.svelte';

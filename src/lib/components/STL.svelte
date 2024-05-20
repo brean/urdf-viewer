@@ -21,9 +21,9 @@
 
 {#if $stl}
   {@html `<!-- include stl: ${filename} ${scale} -->`}
-  <T.Mesh castShadow receiveShadow geometry={$stl} scale={scale}
+  <T.Mesh castShadow receiveShadow geometry={$stl} {scale}
     on:click={onclick}
-    position={position} rotation={rotation}>
-		<T.MeshLambertMaterial color={color} />
+    {position} {rotation}>
+		<T.MeshLambertMaterial {color} />
 	</T.Mesh>
 {/if}

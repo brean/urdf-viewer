@@ -167,7 +167,12 @@ export class UrdfParser {
 
   parseVisual(node: Element): IUrdfVisual {
     // parse visual tag
-    let visual = {} as IUrdfVisual
+    let origin_xyz: number[] | undefined;
+    let origin_rpy: number[] | undefined;
+    let color: HTMLCollectionOf<Element>;
+    let colorName: string = 'pink';
+
+    const visual = {} as IUrdfVisual
     for (let i = 0; i < node.childNodes.length; i++) {
       const child = node.childNodes[i] as Element;
       switch (child.nodeName) {
@@ -175,22 +180,22 @@ export class UrdfParser {
           this.parseGeometry(child, visual)
           break
         case 'origin':
-          let origin_xyz = nsta(child);
+          origin_xyz = nsta(child);
           if (origin_xyz) {
             visual.origin_xyz = origin_xyz
           }
-          let origin_rpy = nsta(child, 'rpy');
+          origin_rpy = nsta(child, 'rpy');
           if (origin_rpy) {
             visual.origin_rpy = origin_rpy
           }
           // visual.origin_rpy
           break
         case 'material':
-          const color = child.getElementsByTagName('color')
+          color = child.getElementsByTagName('color')
           if (color.length > 0 && color[0].hasAttribute('rgba')) {
             visual.color_rgba = nsta(color[0], 'rgba')
           } else if (child.hasAttribute('name')) {
-            let colorName = child.getAttribute('name') as string
+            colorName = child.getAttribute('name') as string
             visual.color_rgba = this.colors[colorName]
           }
       }
@@ -217,7 +222,7 @@ export class UrdfParser {
           let filename = child.getAttribute('filename') as string
           filename = filename.replace('package:/', this.prefix);
           let type = 'stl';
-          switch (filename.substring(filename.length - 3)) {
+          switch (filename.substring(filename.length - 3).toLocaleLowerCase()) {
             case 'fbx':
               type = 'fbx'
               break
