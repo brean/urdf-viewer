@@ -19,8 +19,8 @@
 			"default": "./dist/UrdfParser.js"
 		},
 		"./ThreeStage": {
-			"types": "./dist/components/ThreeStage.d.ts",
-			"default": "./dist/components/ThreeStage.js"
+			"types": "./dist/components/ThreeStage.svelte.d.ts",
+			"svelte": "./dist/components/ThreeStage.svelte"
 		},
 		"./robot_urdf": {
 			"types": "./dist/store/robot_urdf.d.ts",
