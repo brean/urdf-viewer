@@ -40,6 +40,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/kit": "^2.5.5",
+		"@sveltejs/package": "^2.3.1",
 		"@threlte/core": "^7.2.1",
 		"@threlte/extras": "^8.10.3",
 		"@types/three": "^0.163.0",
