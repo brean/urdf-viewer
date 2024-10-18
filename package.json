@@ -43,7 +43,7 @@
 		"@sveltejs/kit": "^2.6.4",
 		"@sveltejs/package": "^2.3.5",
 		"@threlte/core": "^7.3.1",
-		"@threlte/extras": "^8.11.5",
+		"@threlte/extras": "^8.12.0",
 		"@types/three": "^0.169.0",
 		"publint": "^0.2.11",
 		"svelte": "^4.2.19",
