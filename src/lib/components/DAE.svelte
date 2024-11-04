@@ -1,6 +1,6 @@
 <script lang="ts">
   import { T, type AsyncWritable, useLoader } from '@threlte/core';
-  import { Color, Mesh } from 'three';
+  import { Color, Mesh, type EulerTuple } from 'three';
   import { ColladaLoader, type Collada } from 'three/examples/jsm/loaders/ColladaLoader';
 
   export let filename: string;
@@ -12,8 +12,8 @@
   export let onclick: () => void;
 
   let sceneScale: number[] = [1, 1, 1];
-  let scenePosition: number[] = [0, 0, 0];
-  let sceneRotation: number[] = [0, 0, 0];
+  let scenePosition: [x: number, y: number, z: number] = [0, 0, 0];
+  let sceneRotation: EulerTuple | undefined = [0, 0, 0];
   let sceneUp: number[] = [0, 0, 0];
 
   let daeScreen: any;
