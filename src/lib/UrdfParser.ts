@@ -318,6 +318,7 @@ export class UrdfParser {
       if (child && parent) {
         const joint: IUrdfJoint = {
           name: jointXmlNode.getAttribute('name') || undefined,
+          type: jointXmlNode.getAttribute('type') || undefined,
           origin_rpy: rpy,
           origin_xyz: xyz,
           parent: parent,

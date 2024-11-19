@@ -13,6 +13,7 @@
 
   import robot_urdf from '$lib/store/robot_urdf';
   import Grid from '$lib/components/Grid.svelte';
+  import continuous_joints from '$lib/store/continuous_joints';
 
   let innerHeight = 0;
   let innerWidth = 0;
@@ -35,7 +36,7 @@
   bind:innerWidth={innerWidth} />
 
 <main class="main-content">
-  <Canvas shadows size={{height: innerHeight, width: innerWidth}}
+  <Canvas shadows size={{height: innerHeight, width: innerWidth - 250}}
   rendererParameters={{logarithmicDepthBuffer: true}}>
 
     <T.PointLight color="white" intensity={.2} position={[0, 5, 0]} />
@@ -54,4 +55,30 @@
       <UrdfThree />
     {/if}
   </Canvas>
+
+  <div class="joint_states">
+    {#each Object.entries($continuous_joints) as [name, joint]}
+      <input type="range" id={name} min="0" max="360" step="1" value="180"
+        on:change={(e) => {
+          const euler = e.target.value;
+          const rad = euler * Math.PI / 180 - Math.PI;
+          console.log(joint.origin_rpy)
+          joint.origin_rpy = [rad, 0, 0]
+          $robot_urdf = $robot_urdf;
+          
+        }}
+      /><label for={name}>{name}</label>
+    {/each}
+  </div>
 </main>
+
+<style>
+  .joint_states {
+    position:absolute;
+    right: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    border-left: 1px solid black;
+  }
+</style>

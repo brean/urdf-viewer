@@ -9,7 +9,7 @@
   export let scale: number[] = [1, 1, 1];
   export let rotation: number[] = [0, 0, 0];
   export let position: number[] = [0, 0, 0];
-  export let onclick: () => void;
+  export let onclick: (event: Event) => void;
 
   let sceneScale: number[] = [1, 1, 1];
   let scenePosition: [x: number, y: number, z: number] = [0, 0, 0];

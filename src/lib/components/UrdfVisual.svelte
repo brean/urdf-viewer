@@ -9,7 +9,7 @@
   import type { IUrdfLink } from "../models/IUrdfLink";
   import type { IUrdfCylinder } from "../models/IUrdfCylinder";
   import type { IUrdfBox } from "../models/IUrdfBox";
-    import selection from "$lib/store/selection";
+  import selection from "$lib/store/selection";
 
   export let visual:IUrdfVisual;
   export let link: IUrdfLink;
@@ -35,8 +35,10 @@
       break
   }
 
-  const onClick = () => {
-    selection.select(link)
+  const onClick = (event: Event) => {
+    event.stopPropagation();
+    selection.select(link);
+    console.log(link);
   }
 
   interactivity();  
