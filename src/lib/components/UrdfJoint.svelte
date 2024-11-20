@@ -7,12 +7,15 @@
   import { getChildJoints } from "../UrdfParser";
   import continuous_joints from "$lib/store/continuous_joints";
   import { onMount } from "svelte";
+  import revolute_joints from "$lib/store/revolute_joints";
 
   export let joint: IUrdfJoint;
   
   onMount(() => {
     if (joint.type == "continuous" && joint.name) {
       $continuous_joints[joint.name] = joint;
+    } else if (joint.type == "revolute" && joint.name) {
+      $revolute_joints[joint.name] = joint;
     }
   })
 </script>
