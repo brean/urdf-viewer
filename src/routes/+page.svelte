@@ -30,7 +30,8 @@
   onMount(async () => {
     let promise = parser.load();
     let code = await promise;
-    $continuous_joints = {}
+    $continuous_joints = {};
+    $revolute_joints = {};
     $robot_urdf = parser.fromString(code);
   });
 
