@@ -3,7 +3,7 @@
 
 import type { IUrdfVisual } from "./models/IUrdfVisual";
 
-import { numberStringToArray as nsta } from "./helper";
+import { xyzFromString, rpyFromString, rgbaFromString } from "./helper";
 import type { IUrdfLink } from "./models/IUrdfLink";
 import type { IUrdfJoint } from "./models/IUrdfJoint";
 import type { IUrdfMesh } from "./models/IUrdfMesh";
@@ -122,7 +122,7 @@ export class UrdfParser {
   }
 
   colorFromMaterial(xmlMaterial: Element):
-      { name: string, rgba: number[] } | undefined {
+      { name: string, rgba: [r: number, g: number, b: number, a: number] } | undefined {
     // material isn't name
     if (!xmlMaterial.hasAttribute('name')) {
       console.warn(
@@ -144,7 +144,7 @@ export class UrdfParser {
     }
     return {
       name: colorName,
-      rgba: nsta(xmlColor, 'rgba') as number[]
+      rgba: rgbaFromString(xmlColor) || [0, 0, 0, 1]
     }
   }
 
@@ -180,11 +180,11 @@ export class UrdfParser {
           this.parseGeometry(child, visual)
           break
         case 'origin':
-          origin_xyz = nsta(child);
+          origin_xyz = xyzFromString(child);
           if (origin_xyz) {
             visual.origin_xyz = origin_xyz
           }
-          origin_rpy = nsta(child, 'rpy');
+          origin_rpy = rpyFromString(child);
           if (origin_rpy) {
             visual.origin_rpy = origin_rpy
           }
@@ -193,7 +193,7 @@ export class UrdfParser {
         case 'material':
           color = child.getElementsByTagName('color')
           if (color.length > 0 && color[0].hasAttribute('rgba')) {
-            visual.color_rgba = nsta(color[0], 'rgba')
+            visual.color_rgba = rgbaFromString(color[0])
           } else if (child.hasAttribute('name')) {
             colorName = child.getAttribute('name') as string
             visual.color_rgba = this.colors[colorName]
@@ -283,14 +283,14 @@ export class UrdfParser {
       const jointXmlNode = xmlJoints[i];
       
       const originXml = jointXmlNode.getElementsByTagName('origin');
-      let rpy = [0, 0, 0]
-      let xyz = [0, 0, 0]
+      let rpy: [roll: number, pitch: number, yaw: number] = [0, 0, 0]
+      let xyz: [x: number, y: number, z: number] = [0, 0, 0]
       if (originXml.length === 1) {
-        let origin_xyz = nsta(originXml[0]);
+        let origin_xyz = xyzFromString(originXml[0]);
         if (origin_xyz) {
           xyz = origin_xyz
         }
-        let origin_rpy = nsta(originXml[0], 'rpy');
+        let origin_rpy = rpyFromString(originXml[0]);
         if (origin_rpy) {
           rpy = origin_rpy
         }
@@ -315,14 +315,46 @@ export class UrdfParser {
           child = {name: childName, visual: []} as IUrdfLink
         }
       }
+      let limit = undefined;
+      let axis_xyz: [x: number, y: number, z: number] = [0, 0, 1];
+
+      const axisXml = jointXmlNode.getElementsByTagName('axis');
+      if (axisXml.length === 1) {
+        axis_xyz = xyzFromString(axisXml[0]) || axis_xyz;
+      }
+
+      const limitXml = jointXmlNode.getElementsByTagName('limit');
+      if (limitXml.length === 1) {
+        limit = {lower: 0, upper: 0, effort: 0, velocity: 0}
+        const lowerStr = limitXml[0].getAttribute('lower')
+        if (lowerStr) {
+          limit.lower = parseInt(lowerStr);
+        }
+        const upperStr = limitXml[0].getAttribute('upper')
+        if (upperStr) {
+          limit.upper = parseInt(upperStr);
+        }
+        const effortStr = limitXml[0].getAttribute('effort')
+        if (effortStr) {
+          limit.effort = parseInt(effortStr);
+        }
+        const velocityStr = limitXml[0].getAttribute('velocity')
+        if (velocityStr) {
+          limit.velocity = parseInt(velocityStr);
+        }
+      }
+
       if (child && parent) {
         const joint: IUrdfJoint = {
           name: jointXmlNode.getAttribute('name') || undefined,
           type: jointXmlNode.getAttribute('type') || undefined,
           origin_rpy: rpy,
           origin_xyz: xyz,
+          rotation: Object.assign([], rpy),
+          axis_xyz: axis_xyz,
           parent: parent,
-          child: child
+          child: child,
+          limit: limit
         }
         joints.push(joint);
       }

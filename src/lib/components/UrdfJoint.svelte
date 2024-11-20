@@ -19,7 +19,7 @@
 
 {@html `<!-- Joint ${joint.name} (${joint.type}) -->`}
 {#if $robot_urdf}
-  <T.Group rotation={joint.origin_rpy} position={joint.origin_xyz}>
+  <T.Group rotation={joint.rotation} position={joint.origin_xyz}>
     {#each joint.child.visual as visual}
       <UrdfVisual {visual} link={joint.child} />
       {#each getChildJoints($robot_urdf, joint.child) as child}

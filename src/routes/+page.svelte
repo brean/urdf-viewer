@@ -14,6 +14,8 @@
   import robot_urdf from '$lib/store/robot_urdf';
   import Grid from '$lib/components/Grid.svelte';
   import continuous_joints from '$lib/store/continuous_joints';
+  import revolute_joints from '$lib/store/revolute_joints';
+  import { radToEuler } from '$lib/helper';
 
   let innerHeight = 0;
   let innerWidth = 0;
@@ -31,6 +33,7 @@
     $continuous_joints = {}
     $robot_urdf = parser.fromString(code);
   });
+
 </script>
 <svelte:window
   bind:innerHeight={innerHeight}
@@ -58,17 +61,42 @@
   </Canvas>
 
   <div class="joint_states">
-    {#each Object.entries($continuous_joints) as [name, joint]}
-      <input type="range" id={name} min="0" max="360" step="1" value="180"
-        on:change={(e) => {
-          const euler = e.target.value;
-          const rad = euler * Math.PI / 180 - Math.PI;
-          console.log(joint.origin_rpy)
-          joint.origin_rpy[2] = rad;
-          $robot_urdf = $robot_urdf;
-        }}
-      /><label for={name}>{name}</label>
-    {/each}
+    {#if $continuous_joints}
+      <h3>Continuous Joints</h3>
+      {#each Object.entries($continuous_joints) as [name, joint]}
+        <input type="range" id={name} min="0" max="360" step="1" value="180"
+          on:change={(e) => {
+            const euler = e.target.value;
+            const rad = euler * Math.PI / 180 - Math.PI;
+            joint.rotation = [
+              rad*joint.axis_xyz[0] + joint.origin_rpy[0],
+              rad*joint.axis_xyz[1] + joint.origin_rpy[1],
+              rad*joint.axis_xyz[2] + joint.origin_rpy[2]];
+            $robot_urdf = $robot_urdf;
+          }}
+        /><label for={name}>{name}</label>
+      {/each}
+    {/if}
+    {#if $revolute_joints}
+      <h3>Revolute Joints</h3>
+      {#each Object.entries($revolute_joints) as [name, joint]}
+        <input type="range" id={name}
+          min={radToEuler(joint.limit?.lower || 0)}
+          max={radToEuler(joint.limit?.upper || 2*Math.PI)}
+          step="1" value={radToEuler(joint.limit?.lower || 0)}
+          on:change={(e) => {
+            const euler = e.target.value;
+            const rad = euler * Math.PI / 180 - Math.PI;
+            joint.rotation = [
+              rad*joint.axis_xyz[0] + joint.origin_rpy[0],
+              rad*joint.axis_xyz[1] + joint.origin_rpy[1],
+              rad*joint.axis_xyz[2] + joint.origin_rpy[2]];
+            $robot_urdf = $robot_urdf;
+          }}
+        /><label for={name}>{name}</label>
+      
+      {/each}
+    {/if}
   </div>
 </main>
 
