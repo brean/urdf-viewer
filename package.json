@@ -26,6 +26,14 @@
 			"types": "./dist/store/robot_urdf.d.ts",
 			"default": "./dist/store/robot_urdf.js"
 		},
+		"./continuous_joints": {
+			"types": "./dist/store/continuous_joints.d.ts",
+			"default": "./dist/store/continuous_joints.js"
+		},
+		"./revolute_joints": {
+			"types": "./dist/store/revolute_joints.d.ts",
+			"default": "./dist/store/revolute_joints.js"
+		},
 		".": {
 			"types": "./dist/index.d.ts",
 			"svelte": "./dist/index.js"
