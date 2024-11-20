@@ -28,7 +28,8 @@
   onMount(async () => {
     let promise = parser.load();
     let code = await promise;
-    robot_urdf.set(parser.fromString(code));
+    $continuous_joints = {}
+    $robot_urdf = parser.fromString(code);
   });
 </script>
 <svelte:window
@@ -63,9 +64,8 @@
           const euler = e.target.value;
           const rad = euler * Math.PI / 180 - Math.PI;
           console.log(joint.origin_rpy)
-          joint.origin_rpy = [rad, 0, 0]
+          joint.origin_rpy[2] = rad;
           $robot_urdf = $robot_urdf;
-          
         }}
       /><label for={name}>{name}</label>
     {/each}
