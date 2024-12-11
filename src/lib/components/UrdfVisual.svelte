@@ -38,7 +38,6 @@
   const onClick = (event: Event) => {
     event.stopPropagation();
     selection.select(link);
-    console.log(link);
   }
 
   interactivity();  

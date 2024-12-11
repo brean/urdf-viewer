@@ -38,7 +38,6 @@
     sceneUp[1] *= Math.PI / 2;
     sceneUp[2] *= Math.PI / 2;
     
-    console.log(d)
     let _objs: Mesh[] = []
     d.scene.traverse((obj) => {
       if (obj.type === 'Mesh') {
