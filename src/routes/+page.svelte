@@ -36,8 +36,8 @@
 
 </script>
 <svelte:window
-  bind:innerHeight={innerHeight}
-  bind:innerWidth={innerWidth} />
+  bind:innerHeight
+  bind:innerWidth />
 
 <main class="main-content">
   <div style:width={innerWidth - 250 + 'px'} style:height={innerHeight + 'px'}>
