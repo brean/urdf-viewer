@@ -67,7 +67,7 @@
           scale={child.scale ? child.scale.toArray() : [1, 1, 1]}
           position={child.position ? child.position.toArray() : [0, 0, 0]}
           material={child.material}
-          on:click={onclick} >
+          onclick={onclick} >
         </T.Mesh>
         {/each}
       </T.Group>
