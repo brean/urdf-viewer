@@ -1,3 +1,3 @@
 export interface IUrdfBox {
-  size: number[]
+  size: [x: number, y: number, z: number]
 }

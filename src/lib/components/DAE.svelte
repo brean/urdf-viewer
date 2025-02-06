@@ -3,24 +3,31 @@
   import { Color, Mesh, type EulerTuple } from 'three';
   import { ColladaLoader, type Collada } from 'three/examples/jsm/loaders/ColladaLoader';
 
-  export let filename: string;
-  // use pink as fallback color
-  export let color: Color = new Color('pink');
-  export let scale: number[] = [1, 1, 1];
-  export let rotation: number[] = [0, 0, 0];
-  export let position: number[] = [0, 0, 0];
-  export let onclick: (event: Event) => void;
+  interface Props {
+    filename: string
+    color?: Color
+    scale?: [x: number, y: number, z: number]
+    position?: [x: number, y: number, z: number]
+    rotation?: [x: number, y: number, z: number]
+    onclick?: (event: Event) => void
+  }
+  let {
+    filename,
+     // use pink as fallback color
+    color = new Color('pink'),
+    scale = [1, 1, 1],
+    rotation = [0, 0, 0],
+    position = [0, 0, 0],
+    onclick = (event: Event) => {}
+  }: Props = $props();
 
-  let sceneScale: number[] = [1, 1, 1];
-  let scenePosition: [x: number, y: number, z: number] = [0, 0, 0];
-  let sceneRotation: EulerTuple | undefined = [0, 0, 0];
-  let sceneUp: number[] = [0, 0, 0];
-
-  let daeScreen: any;
+  let sceneScale: [x: number, y: number, z: number] = $state([1, 1, 1]);
+  let scenePosition: [x: number, y: number, z: number] = $state([0, 0, 0]);
+  let sceneRotation: EulerTuple | undefined = $state([0, 0, 0]);
+  let sceneUp: [x: number, y: number, z: number] = $state([0, 0, 0]);
+  let objs: Mesh[] = $state([]);
 
   const loader = useLoader(ColladaLoader);
-
-  let objs: Mesh[] = [];
 
   let dae: AsyncWritable<Collada> = loader.load(filename);
   dae.subscribe((d: Collada | undefined) => {

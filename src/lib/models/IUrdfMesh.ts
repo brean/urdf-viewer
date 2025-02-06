@@ -1,5 +1,5 @@
 export interface IUrdfMesh {
   filename: string;
   type: 'stl' | 'fbx' | 'obj' | 'dae';
-  scale: number[];
+  scale: [x: number, y: number, z: number];
 }

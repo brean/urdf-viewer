@@ -2,12 +2,18 @@
   // Three.js visualisation of a URDF.
 	import { T } from '@threlte/core';
   import { Quaternion, Vector3 } from 'three';
-  import robot_urdf from '../store/robot_urdf';
   import UrdfJoint from './UrdfJoint.svelte';
   import { getRootJoints } from '../UrdfParser';
+  import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
 
-  export let position: [x: number, y: number, z: number] = [0, 0, 0];
-  export let quaternion: [x: number, y: number, z: number, w:number] | undefined = undefined;
+  interface Props {
+    position?: [x: number, y: number, z: number]
+    quaternion?: [x: number, y: number, z: number, w:number]
+  }
+  let {
+    position = [0, 0, 0],
+    quaternion
+  }: Props = $props();
   
   // the axis in Three are different from urdf
   if (!quaternion) {
@@ -18,9 +24,9 @@
 
 </script>
 
-{#if $robot_urdf}
-<T.Group position={position} quaternion={quaternion}>
-  {#each getRootJoints($robot_urdf) as joint}
+{#if urdf_viewer_state.robot}
+<T.Group {position} {quaternion}>
+  {#each getRootJoints(urdf_viewer_state.robot) as joint}
     <UrdfJoint
       {joint}
     />

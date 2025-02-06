@@ -42,10 +42,11 @@ export function getChildJoints(
     return []
   }
   for (const joint of joints) {
-    if (joint.parent === parent) {
+    if (joint.parent.name == parent.name) {
       childJoints.push(joint);
     }
   }
+  console.log('children of ', parent, childJoints);
   return childJoints
 }
 
@@ -55,7 +56,7 @@ export class UrdfParser {
   filename: string;
 
   // loaded colors from root materials
-  colors: { [name: string]: number[] } = {}
+  colors: { [name: string]: [r: number, g: number, b: number, a: number] } = {}
 
   robot: IUrdfRobot = {
     name: '',
@@ -167,8 +168,8 @@ export class UrdfParser {
 
   parseVisual(node: Element): IUrdfVisual {
     // parse visual tag
-    let origin_xyz: number[] | undefined;
-    let origin_rpy: number[] | undefined;
+    let origin_xyz: [x: number, y: number, z: number] | undefined;
+    let origin_rpy: [roll: number, pitch: number, yaw: number] | undefined;
     let color: HTMLCollectionOf<Element>;
     let colorName: string = 'pink';
 

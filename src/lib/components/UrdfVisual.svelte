@@ -9,72 +9,69 @@
   import type { IUrdfLink } from "../models/IUrdfLink";
   import type { IUrdfCylinder } from "../models/IUrdfCylinder";
   import type { IUrdfBox } from "../models/IUrdfBox";
-  import selection from "$lib/store/selection";
+  import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
 
-  export let visual:IUrdfVisual;
-  export let link: IUrdfLink;
-  let cylinder: IUrdfCylinder;
-  let box: IUrdfBox;
-
-  const position = visual.origin_xyz || [0, 0, 0];
-  const rotation = visual.origin_rpy || [0, 0, 0];
-  const color = numberArrayToColor(visual.color_rgba);
-  let scale: number[] = [1, 1, 1];
-  let mesh: IUrdfMesh;
-  
-  switch (visual.type) {
-    case 'mesh':
-      mesh = visual.geometry as IUrdfMesh
-      scale = mesh.scale;
-      break;
-    case 'box':
-      box = visual.geometry as IUrdfBox
-      break
-    case 'cylinder':
-      cylinder = visual.geometry as IUrdfCylinder;
-      break
+  interface Props {
+    visual?: IUrdfVisual
+    link?: IUrdfLink
   }
 
-  const onClick = (event: Event) => {
+  let {
+    visual,
+    link
+  }: Props = $props();
+
+  const color = $derived(numberArrayToColor(visual ? visual.color_rgba : undefined));
+  
+  const onclick = (event: Event) => {
     event.stopPropagation();
-    selection.select(link);
+    urdf_viewer_state.selection = link;
   }
 
   interactivity();  
 </script>
 
-{#if visual.type === 'mesh' && mesh}
-  {#if mesh.type === 'stl'}
+{#if visual && visual.type === 'mesh' && visual.geometry}
+  {#if (visual.geometry as IUrdfMesh).type === 'stl'}
     <STL
-      onclick={onClick}
-      filename={mesh.filename}
-      {position}
-      {rotation}
+      {onclick}
+      filename={(visual.geometry as IUrdfMesh).filename}
+      position={visual.origin_xyz || [0, 0, 0]}
+      rotation={visual.origin_rpy || [0, 0, 0]}
       {color}
-      {scale} />
-  {:else if mesh.type === 'dae'}
+      scale={(visual.geometry as IUrdfMesh).scale || [1, 1, 1]} />
+  {:else if (visual.geometry as IUrdfMesh).type === 'dae'}
     <DAE
-      onclick={onClick}
-      filename={mesh.filename}
-      {position}
-      {rotation}
+      {onclick}
+      filename={(visual.geometry as IUrdfMesh).filename}
+      position={visual.origin_xyz || [0, 0, 0]}
+      rotation={visual.origin_rpy || [0, 0, 0]}
       {color}
-      {scale} />
+      scale={(visual.geometry as IUrdfMesh).scale || [1, 1, 1]} />
   {/if}
-{:else}
-	<T.Mesh castShadow receiveShadow
-      scale={scale}
-      on:click={onClick}
-      {position}
-      {rotation}>
-    {#if visual.type === 'cylinder'}
+{:else if visual}
+  {#if visual.type === 'cylinder'}
+	  <T.Mesh castShadow receiveShadow
+      {onclick}
+      position={visual.origin_xyz || [0, 0, 0]}
+      rotation={visual.origin_rpy || [0, 0, 0]}>
       <!-- cylinder are rotated 90° in Three compared to urdf -->
 		  <T.CylinderGeometry 
-        args={[cylinder.radius, cylinder.radius, cylinder.length]}  
+        args={[
+          (visual.geometry as IUrdfCylinder).radius, 
+          (visual.geometry as IUrdfCylinder).radius,
+          (visual.geometry as IUrdfCylinder).length]}
        />
-    {:else if visual.type === 'box'}
+       <T.MeshBasicMaterial {color} />
+    </T.Mesh>
+  {:else if visual.type === 'box'}
+    <T.Mesh castShadow receiveShadow
+      scale={(visual.geometry as IUrdfBox).size || [1, 1, 1]}
+      {onclick}
+      position={visual.origin_xyz || [0, 0, 0]}
+      rotation={visual.origin_rpy || [0, 0, 0]}>
       <T.BoxGeometry />
-    {/if}
-		<T.MeshBasicMaterial {color} />
-	</T.Mesh>
+      <T.MeshBasicMaterial {color} />
+    </T.Mesh>
+  {/if}
 {/if}

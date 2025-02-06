@@ -1,11 +1,11 @@
-import { Color, Euler, Quaternion, Vector3 } from "three";
+import { Color } from "three";
 
 export function xyzFromString(child: Element): [x: number, y: number, z: number] | undefined {
   const arr = numberStringToArray(child, 'xyz');
   if (!arr || arr.length != 3) {
     return
   }
-  return arr;
+  return arr as [x: number, y: number, z: number];
 }
 
 export function rpyFromString(child: Element): [roll: number, pitch: number, yaw: number] | undefined {
@@ -13,7 +13,7 @@ export function rpyFromString(child: Element): [roll: number, pitch: number, yaw
   if (!arr || arr.length != 3) {
     return
   }
-  return arr;
+  return arr as [roll: number, pitch: number, yaw: number];
 }
 
 export function rgbaFromString(child: Element): [r: number, g: number, b: number, a: number] | undefined {
@@ -21,7 +21,7 @@ export function rgbaFromString(child: Element): [r: number, g: number, b: number
   if (!arr || arr.length != 4) {
     return
   }
-  return arr;
+  return arr as [r: number, g: number, b: number, a: number];
 }
 
 export function numberStringToArray(
@@ -45,7 +45,7 @@ export function radToEuler(rad: number): number {
   return rad * 180 / Math.PI
 }
 
-export function numberArrayToColor(col?: number[]) {
+export function numberArrayToColor(col?: number[]): Color {
   if (!col) {
     return new Color('white')
   }

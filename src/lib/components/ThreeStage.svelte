@@ -4,15 +4,29 @@
 
   // based on 
   // https://github.com/pmndrs/drei/blob/master/src/core/Stage.tsx
-  export let intensity: number = 0.5;
-  export let radius: number = 1.0;
-  export let shadows: boolean = true;
-  export let preset_name: 'rembrandt' | 'portrait' | 'upfront' | 'soft' = 'rembrandt';
-  export let shadowBias: number = -0.0001;
-  export let normalBias: number = 0;
-  export let shadowSize: number = 256;
-  export let height: number = 1.0;
-  export let shadowOffset: number = 1.0;
+  interface Props {
+    intensity?: number
+    radius?: number
+    shadows?: boolean
+    preset_name?: 'rembrandt' | 'portrait' | 'upfront' | 'soft'
+    shadowBias?: number
+    normalBias?: number
+    shadowSize?: number
+    height?: number
+    shadowOffset?: number
+  }
+
+  let {
+    intensity = 0.5,
+    radius = 1.0,
+    shadows = true,
+    preset_name = 'rembrandt',
+    shadowBias = -0.0001,
+    normalBias = 0,
+    shadowSize = 256,
+    height = 1.0,
+    shadowOffset = 1.0
+  }: Props = $props();
 
   const presets = {
     rembrandt: {

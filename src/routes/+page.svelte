@@ -1,6 +1,6 @@
 <!-- view the robot, do not edit it -->
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
 
   import { onMount } from 'svelte';
 
@@ -11,16 +11,15 @@
 
   import { UrdfParser } from '$lib/UrdfParser';
 
-  import robot_urdf from '$lib/store/robot_urdf';
   import Grid from '$lib/components/Grid.svelte';
-  import continuous_joints from '$lib/store/continuous_joints';
-  import revolute_joints from '$lib/store/revolute_joints';
   import { radToEuler } from '$lib/helper';
+  import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
+  import { WebGLRenderer } from 'three';
 
   let innerHeight = 0;
   let innerWidth = 0;
 
-  let prefix = $page.url.href;
+  let prefix = page.url.href;
   prefix = prefix.endsWith('/') ? prefix.substring(0, prefix.length-1) : prefix;
   const robot_name = "turtlebot3_burger";
 
@@ -30,9 +29,9 @@
   onMount(async () => {
     let promise = parser.load();
     let code = await promise;
-    $continuous_joints = {};
-    $revolute_joints = {};
-    $robot_urdf = parser.fromString(code);
+    urdf_viewer_state.continuousJoints = {};
+    urdf_viewer_state.revoluteJoints = {};
+    urdf_viewer_state.robot = parser.fromString(code);
   });
 
 </script>
@@ -41,58 +40,73 @@
   bind:innerWidth={innerWidth} />
 
 <main class="main-content">
-  <Canvas shadows size={{height: innerHeight, width: innerWidth - 250}}
-  rendererParameters={{logarithmicDepthBuffer: true}}>
+  <div style:width={innerWidth - 250 + 'px'} style:height={innerHeight + 'px'}>
+    <Canvas
+    createRenderer={(canvas) => {
+      return new WebGLRenderer({
+        canvas,
+        alpha: true,
+        powerPreference: 'high-performance',
+        logarithmicDepthBuffer: true
+      })}}
+      shadows>
 
-    <T.PointLight color="white" intensity={.2} position={[0, 5, 0]} />
-    <T.PointLight color="blue" intensity={0.5} position={[5, 5, 0]} />
-    <T.PointLight color="yellow" intensity={0.5} position={[-5, -5, 0]} />
+      <T.PointLight color="white" intensity={.2} position={[0, 5, 0]} />
+      <T.PointLight color="blue" intensity={0.5} position={[5, 5, 0]} />
+      <T.PointLight color="yellow" intensity={0.5} position={[-5, -5, 0]} />
 
-    <T.PerspectiveCamera makeDefault let:ref={camera}
-      position={[.6, .6, .6]} fov={25}>
-      <OrbitControls enableZoom={true} />
-    </T.PerspectiveCamera>
+      <T.PerspectiveCamera
+        makeDefault
+        position={[.6, .6, .6]} fov={25}>
+        <OrbitControls enableZoom={true} />
+      </T.PerspectiveCamera>
 
-    <ThreeStage preset_name="soft" />
-    <Grid />
+      <ThreeStage preset_name="soft" />
+      <Grid />
 
-    {#if $robot_urdf}
-      <UrdfThree />
-    {/if}
-  </Canvas>
+      {#if urdf_viewer_state.robot}
+        <UrdfThree />
+      {/if}
+    </Canvas>
+  </div>
 
+  <!-- TODO: use snippet instead! -->
   <div class="joint_states">
-    {#if $continuous_joints}
+    {#if urdf_viewer_state.continuousJoints}
       <h3>Continuous Joints</h3>
-      {#each Object.entries($continuous_joints) as [name, joint]}
+      {#each Object.entries(urdf_viewer_state.continuousJoints) as [name, joint]}
         <input type="range" id={name} min="0" max="360" step="1" value="180"
-          on:change={(e) => {
+          oninput={(e) => {
+            if (!e.target) {
+              return
+            }
             const euler = e.target.value;
             const rad = euler * Math.PI / 180 - Math.PI;
             joint.rotation = [
               rad*joint.axis_xyz[0] + joint.origin_rpy[0],
               rad*joint.axis_xyz[1] + joint.origin_rpy[1],
               rad*joint.axis_xyz[2] + joint.origin_rpy[2]];
-            $robot_urdf = $robot_urdf;
           }}
         /><label for={name}>{name}</label>
       {/each}
     {/if}
-    {#if $revolute_joints}
+    {#if urdf_viewer_state.revoluteJoints}
       <h3>Revolute Joints</h3>
-      {#each Object.entries($revolute_joints) as [name, joint]}
+      {#each Object.entries(urdf_viewer_state.revoluteJoints) as [name, joint]}
         <input type="range" id={name}
           min={radToEuler(joint.limit?.lower || 0)}
           max={radToEuler(joint.limit?.upper || 2*Math.PI)}
           step="1" value={radToEuler(joint.limit?.lower || 0)}
-          on:change={(e) => {
+          oninput={(e) => {
+            if (!e.target) {
+              return
+            }
             const euler = e.target.value;
             const rad = euler * Math.PI / 180 - Math.PI;
             joint.rotation = [
               rad*joint.axis_xyz[0] + joint.origin_rpy[0],
               rad*joint.axis_xyz[1] + joint.origin_rpy[1],
               rad*joint.axis_xyz[2] + joint.origin_rpy[2]];
-            $robot_urdf = $robot_urdf;
           }}
         /><label for={name}>{name}</label>
       

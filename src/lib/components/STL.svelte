@@ -3,20 +3,28 @@
   import { Color } from 'three';
   import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 
-  export let filename: string;
-  // use pink as fallback color
-  export let color: Color = new Color('pink');
-  export let scale: number[] = [1, 1, 1];
-  export let rotation: number[] = [0, 0, 0];
-  export let position: number[] = [0, 0, 0];
-  export let onclick: (event: Event) => void;
+  interface Props {
+    filename: string
+    color?: Color
+    scale?: [x: number, y: number, z: number]
+    position?: [x: number, y: number, z: number]
+    rotation?: [x: number, y: number, z: number]
+    onclick?: (event: Event) => void
+  }
+  let {
+    filename,
+     // use pink as fallback color
+    color = new Color('pink'),
+    scale = [1, 1, 1],
+    rotation = [0, 0, 0],
+    position = [0, 0, 0],
+    onclick = (event: Event) => {}
+  }: Props = $props();
 
   const loader = useLoader(STLLoader);
 
-  let stl;
-  $: {
-    stl = loader.load(filename)
-  }
+  let stl = $derived(loader.load(filename));
+
 </script>
 
 {#if $stl}

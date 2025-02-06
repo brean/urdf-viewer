@@ -3,10 +3,10 @@ import type { IUrdfCylinder } from "./IUrdfCylinder";
 import type { IUrdfMesh } from "./IUrdfMesh";
 
 export interface IUrdfVisual {
-  origin_xyz?: number[]
-  origin_rpy?: number[]
+  origin_xyz?: [x: number, y: number, z: number]
+  origin_rpy?: [roll: number, pitch: number, yaw: number]
   geometry: IUrdfBox | IUrdfCylinder | IUrdfMesh;
   type: 'box' | 'cylinder' | 'mesh'
   // material color
-  color_rgba?: number[];
+  color_rgba?: [r: number, g: number, b: number, a: number];
 }
