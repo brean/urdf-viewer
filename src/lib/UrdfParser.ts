@@ -46,7 +46,6 @@ export function getChildJoints(
       childJoints.push(joint);
     }
   }
-  console.log('children of ', parent, childJoints);
   return childJoints
 }
 
