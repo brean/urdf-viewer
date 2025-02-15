@@ -1,6 +1,6 @@
 import type { IUrdfVisual } from "./IUrdfVisual"
 
-export interface IUrdfLink {
+export default interface IUrdfLink {
   name: string
   visual: IUrdfVisual[]
 }
