@@ -1,8 +1,8 @@
-import type { IUrdfBox } from "./IUrdfBox";
-import type { IUrdfCylinder } from "./IUrdfCylinder";
-import type { IUrdfMesh } from "./IUrdfMesh";
+import type IUrdfBox from "./IUrdfBox";
+import type IUrdfCylinder from "./IUrdfCylinder";
+import type IUrdfMesh from "./IUrdfMesh";
 
-export interface IUrdfVisual {
+export default interface IUrdfVisual {
   origin_xyz?: [x: number, y: number, z: number]
   origin_rpy?: [roll: number, pitch: number, yaw: number]
   geometry: IUrdfBox | IUrdfCylinder | IUrdfMesh;

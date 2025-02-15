@@ -1,7 +1,7 @@
-import type { IUrdfJoint } from "./IUrdfJoint"
-import type { IUrdfLink } from "./IUrdfLink"
+import type IUrdfJoint from "./IUrdfJoint"
+import type IUrdfLink from "./IUrdfLink"
 
-export interface IUrdfRobot {
+export default interface IUrdfRobot {
   name: string
   links: {[name: string]: IUrdfLink}
   joints: IUrdfJoint[]

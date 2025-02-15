@@ -1,14 +1,14 @@
 <script lang="ts">
-  import type { IUrdfMesh } from "../models/IUrdfMesh";
-  import type { IUrdfVisual } from "../models/IUrdfVisual";
+  import type IUrdfMesh from "../models/IUrdfMesh";
+  import type IUrdfVisual from "../models/IUrdfVisual";
   import { numberArrayToColor } from "../helper";
   import DAE from "./DAE.svelte";
   import STL from "./STL.svelte";
   import { T } from "@threlte/core";
   import { interactivity } from "@threlte/extras";
-  import type { IUrdfLink } from "../models/IUrdfLink";
-  import type { IUrdfCylinder } from "../models/IUrdfCylinder";
-  import type { IUrdfBox } from "../models/IUrdfBox";
+  import type IUrdfLink from "../models/IUrdfLink";
+  import type IUrdfCylinder from "../models/IUrdfCylinder";
+  import type IUrdfBox from "../models/IUrdfBox";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
 
   interface Props {

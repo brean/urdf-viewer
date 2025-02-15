@@ -1,15 +1,15 @@
 // create interface-instances of the model based on XML-URDF file.
 // These interface is closer to the Three.js-structure so its easy
 
-import type { IUrdfVisual } from "./models/IUrdfVisual";
+import type IUrdfVisual from "./models/IUrdfVisual";
 
 import { xyzFromString, rpyFromString, rgbaFromString } from "./helper";
-import type { IUrdfLink } from "./models/IUrdfLink";
-import type { IUrdfJoint } from "./models/IUrdfJoint";
-import type { IUrdfMesh } from "./models/IUrdfMesh";
-import type { IUrdfCylinder } from "./models/IUrdfCylinder";
-import type { IUrdfBox } from "./models/IUrdfBox";
-import type { IUrdfRobot } from "./models/IUrdfRobot";
+import type IUrdfLink from "./models/IUrdfLink";
+import type IUrdfJoint from "./models/IUrdfJoint";
+import type IUrdfMesh from "./models/IUrdfMesh";
+import type IUrdfCylinder from "./models/IUrdfCylinder";
+import type IUrdfBox from "./models/IUrdfBox";
+import type IUrdfRobot from "./models/IUrdfRobot";
 
 export function getRootJoints(robot:IUrdfRobot): IUrdfJoint[] {
   // get the root joint(s)

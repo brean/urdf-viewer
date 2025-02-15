@@ -1,6 +1,6 @@
 <script lang="ts">
   import { T } from "@threlte/core";
-  import type { IUrdfJoint } from "../models/IUrdfJoint";
+  import type IUrdfJoint from "../models/IUrdfJoint";
   import UrdfJoint from './UrdfJoint.svelte'
   import UrdfVisual from "./UrdfVisual.svelte";
   import { getChildJoints } from "../UrdfParser";

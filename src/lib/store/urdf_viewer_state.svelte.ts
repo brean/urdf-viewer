@@ -1,6 +1,6 @@
-import type { IUrdfJoint } from "$lib/models/IUrdfJoint"
-import type { IUrdfLink } from "$lib/models/IUrdfLink"
-import type { IUrdfRobot } from "$lib/models/IUrdfRobot"
+import type IUrdfJoint from "$lib/models/IUrdfJoint"
+import type IUrdfLink from "$lib/models/IUrdfLink"
+import type IUrdfRobot from "$lib/models/IUrdfRobot"
 
 export const urdf_viewer_state = $state<{
     selection?: IUrdfLink
