@@ -7,7 +7,7 @@ import UrdfThree from "./components/UrdfThree.svelte";
 import UrdfVisual from "./components/UrdfVisual.svelte";
 
 import { urdf_viewer_state } from "./store/urdf_viewer_state.svelte";
-import { UrdfParser } from "./UrdfParser";
+import { getRootJoints, UrdfParser } from "./UrdfParser";
 
 import { xyzFromString, rpyFromString, rgbaFromString, numberArrayToColor, numberStringToArray, radToEuler } from "./helper";
 
@@ -20,7 +20,7 @@ import type IUrdfRobot from "./models/IUrdfRobot";
 import type IUrdfVisual from "./models/IUrdfVisual";
 
 export { DAE, Grid, STL, ThreeStage, UrdfJoint, UrdfThree, UrdfVisual, 
-    urdf_viewer_state, UrdfParser,
+    urdf_viewer_state, UrdfParser, getRootJoints,
     xyzFromString, rpyFromString, rgbaFromString, numberArrayToColor, numberStringToArray,radToEuler }
 
 export type { IUrdfBox, IUrdfCylinder, IUrdfJoint, IUrdfLink, IUrdfMesh, IUrdfRobot, IUrdfVisual };
