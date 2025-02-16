@@ -45,7 +45,6 @@
       next = next
     }
   }
-
 </script>
 <svelte:window
   bind:innerHeight

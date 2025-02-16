@@ -34,8 +34,7 @@
     if (!d) {
       return;
     }
-    let scene = d.scene
-    sceneUp = scene.up.toArray();
+    let scene = d.scene;
     sceneScale = scene.scale.toArray();
     scenePosition = scene.position.toArray();
     sceneRotation = scene.rotation ? scene.rotation.toArray() : sceneRotation;
@@ -53,7 +52,6 @@
     })
     objs = _objs;
   });
-
 </script>
 
 {#if objs.length > 0}

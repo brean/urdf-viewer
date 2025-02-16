@@ -47,7 +47,6 @@ group-->
     }
     const obj = event.target.object;
     updateData(obj);
-    // console.log(urdf_viewer_state.parser)
   };
 
   interactivity();
