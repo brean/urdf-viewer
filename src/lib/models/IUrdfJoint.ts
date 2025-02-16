@@ -21,4 +21,5 @@ export default interface IUrdfJoint {
     effort: number
     velocity: number
   }
+  elem: Element
 }

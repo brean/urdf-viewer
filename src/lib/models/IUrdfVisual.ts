@@ -9,4 +9,6 @@ export default interface IUrdfVisual {
   type: 'box' | 'cylinder' | 'mesh'
   // material color
   color_rgba?: [r: number, g: number, b: number, a: number];
+  // XML Element
+  elem: Element;
 }

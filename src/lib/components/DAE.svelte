@@ -18,7 +18,7 @@
     scale = [1, 1, 1],
     rotation = [0, 0, 0],
     position = [0, 0, 0],
-    onclick = (event: Event) => {}
+    onclick = () => {}
   }: Props = $props();
 
   let sceneScale: [x: number, y: number, z: number] = $state([1, 1, 1]);
@@ -67,7 +67,7 @@
           scale={child.scale ? child.scale.toArray() : [1, 1, 1]}
           position={child.position ? child.position.toArray() : [0, 0, 0]}
           material={child.material}
-          onclick={onclick} >
+          {onclick} >
         </T.Mesh>
         {/each}
       </T.Group>

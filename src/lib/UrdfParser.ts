@@ -49,6 +49,12 @@ export function getChildJoints(
   return childJoints
 }
 
+export function updateJoint(joint: IUrdfJoint) {
+  const origin = joint.elem.getElementsByTagName('origin')[0];
+  origin.setAttribute('xyz', joint.origin_xyz.join(' '))
+  origin.setAttribute('rpy', joint.origin_rpy.join(' '))
+}
+
 // render the 3D-model from this.
 export class UrdfParser {
   // filename of xml to load
@@ -148,6 +154,23 @@ export class UrdfParser {
     }
   }
 
+  getLinkByName(name: string): Element | undefined {
+    if (!this.xmlRobotNode) {
+      return undefined;
+    }
+    const xmlLinks = this.xmlRobotNode.getElementsByTagName('link');
+    for (let i = 0; i < xmlLinks.length; i++) {
+      const linkXmlNode = xmlLinks[i];
+      if (linkXmlNode.hasAttribute('name')) {
+        const _name = linkXmlNode.getAttribute('name') as string;
+        if (name == _name) {
+          return linkXmlNode;
+        }
+      }
+    }
+    return undefined;
+  }
+
   parseLinks(robotNode: Element) {
     const xmlLinks = robotNode.getElementsByTagName('link');
     for (let i = 0; i < xmlLinks.length; i++) {
@@ -172,7 +195,7 @@ export class UrdfParser {
     let color: HTMLCollectionOf<Element>;
     let colorName: string = 'pink';
 
-    const visual = {} as IUrdfVisual
+    const visual = { elem: node } as IUrdfVisual
     for (let i = 0; i < node.childNodes.length; i++) {
       const child = node.childNodes[i] as Element;
       switch (child.nodeName) {
@@ -296,13 +319,25 @@ export class UrdfParser {
         }
       }
       let parent
-      const parentXml = jointXmlNode.getElementsByTagName('parent');
-      if (parentXml.length === 1) {
-        const parentName = parentXml[0].getAttribute('link')
+      const parentXmlTag = jointXmlNode.getElementsByTagName('parent');
+      if (parentXmlTag.length === 1) {
+        const parentName = parentXmlTag[0].getAttribute('link');
+        if (!parentName) {
+          throw Error('Name not set for link');
+        }
+        const parentXml = this.getLinkByName(parentName);
+        if (!parentXml) {
+          throw Error(`Link with name ${parentName} not found!`);
+        }
         if (parentName && links[parentName]) {
           parent = links[parentName];
         } else {
-          parent = {name: parentName, visual: []} as IUrdfLink
+          parent = {
+            name: parentName,
+            visual: [],
+            elem: parentXml,
+            highlight: false
+          } as IUrdfLink
         }
       }
       let child
@@ -311,8 +346,14 @@ export class UrdfParser {
         const childName = childXml[0].getAttribute('link')
         if (childName && links[childName]) {
           child = links[childName];
-        } else {
-          child = {name: childName, visual: []} as IUrdfLink
+        } else if (childName) {
+          const elem = this.getLinkByName(childName);
+          child = {
+            name: childName,
+            visual: [],
+            elem,
+            highlight: false
+          } as IUrdfLink
         }
       }
       let limit = undefined;
@@ -345,7 +386,7 @@ export class UrdfParser {
       }
 
       if (child && parent) {
-        const joint: IUrdfJoint = {
+        joints.push({
           name: jointXmlNode.getAttribute('name') || undefined,
           type: jointXmlNode.getAttribute('type') || undefined,
           origin_rpy: rpy,
@@ -354,9 +395,9 @@ export class UrdfParser {
           axis_xyz: axis_xyz,
           parent: parent,
           child: child,
-          limit: limit
-        }
-        joints.push(joint);
+          limit: limit,
+          elem: jointXmlNode
+        });
       }
     }
   }

@@ -10,21 +10,28 @@
   import type IUrdfCylinder from "../models/IUrdfCylinder";
   import type IUrdfBox from "../models/IUrdfBox";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
+  import { Color } from "three";
 
   interface Props {
     visual?: IUrdfVisual
     link?: IUrdfLink
+    onselectionchange?: (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => void
   }
 
   let {
     visual,
-    link
+    link,
+    onselectionchange = undefined
   }: Props = $props();
 
-  const color = $derived(numberArrayToColor(visual ? visual.color_rgba : undefined));
+  const color = $derived(
+    link?.highlight ? urdf_viewer_state.highlightColor : numberArrayToColor(visual ? visual.color_rgba : undefined));
   
   const onclick = (event: Event) => {
     event.stopPropagation();
+    if (onselectionchange) {
+      onselectionchange(urdf_viewer_state.selection, link);
+    }
     urdf_viewer_state.selection = link;
   }
 

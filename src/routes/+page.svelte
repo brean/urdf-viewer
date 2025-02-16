@@ -15,9 +15,10 @@
   import { radToEuler } from '$lib/helper';
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
   import { WebGLRenderer } from 'three';
+  import type { IUrdfLink } from '$lib';
 
-  let innerHeight = 0;
-  let innerWidth = 0;
+  let innerHeight = $state(0);
+  let innerWidth = $state(0);
 
   let prefix = page.url.href;
   prefix = prefix.endsWith('/') ? prefix.substring(0, prefix.length-1) : prefix;
@@ -33,6 +34,17 @@
     urdf_viewer_state.revoluteJoints = {};
     urdf_viewer_state.robot = parser.fromString(code);
   });
+
+  let onselectionchange = (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => {
+    if (prev) {
+      prev.highlight = false;
+      prev = prev
+    }
+    if (next) {
+      next.highlight = true;
+      next = next
+    }
+  }
 
 </script>
 <svelte:window
@@ -65,7 +77,7 @@
       <Grid />
 
       {#if urdf_viewer_state.robot}
-        <UrdfThree />
+        <UrdfThree {onselectionchange} />
       {/if}
     </Canvas>
   </div>
@@ -112,6 +124,10 @@
       
       {/each}
     {/if}
+    <button onclick={() => {
+      // todo switch visual/collision
+      urdf_viewer_state.display = urdf_viewer_state.display == 'visual' ? 'collision' : 'visual'
+    }}>switch to {urdf_viewer_state.display == 'visual' ? 'collision' : 'visual'}</button>
   </div>
 </main>
 

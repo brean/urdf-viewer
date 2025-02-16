@@ -5,14 +5,17 @@
   import UrdfJoint from './UrdfJoint.svelte';
   import { getRootJoints } from '../UrdfParser';
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
+  import type IUrdfLink from '$lib/models/IUrdfLink';
 
   interface Props {
     position?: [x: number, y: number, z: number]
     quaternion?: [x: number, y: number, z: number, w:number]
+    onselectionchange?: (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => void
   }
   let {
     position = [0, 0, 0],
-    quaternion
+    quaternion,
+    onselectionchange
   }: Props = $props();
   
   // the axis in Three are different from urdf
@@ -29,6 +32,7 @@
   {#each getRootJoints(urdf_viewer_state.robot) as joint}
     <UrdfJoint
       {joint}
+      {onselectionchange}
     />
   {/each}
 </T.Group>

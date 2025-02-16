@@ -18,7 +18,7 @@
     scale = [1, 1, 1],
     rotation = [0, 0, 0],
     position = [0, 0, 0],
-    onclick = (event: Event) => {}
+    onclick = () => {}
   }: Props = $props();
 
   const loader = useLoader(STLLoader);
@@ -30,7 +30,7 @@
 {#if $stl}
   {@html `<!-- include stl: ${filename} ${scale} -->`}
   <T.Mesh castShadow receiveShadow geometry={$stl} {scale}
-    onclick={onclick}
+    {onclick}
     {position} {rotation}>
 		<T.MeshLambertMaterial {color} />
 	</T.Mesh>

@@ -1,6 +1,8 @@
-import type { IUrdfVisual } from "./IUrdfVisual"
+import type IUrdfVisual from "./IUrdfVisual"
 
 export default interface IUrdfLink {
   name: string
   visual: IUrdfVisual[]
+  elem: Element
+  highlight: boolean
 }
