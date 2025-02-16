@@ -126,7 +126,7 @@
     <button onclick={() => {
       // todo switch visual/collision
       urdf_viewer_state.display = urdf_viewer_state.display == 'visual' ? 'collision' : 'visual'
-    }}>switch to {urdf_viewer_state.display == 'visual' ? 'collision' : 'visual'}</button>
+    }}>{urdf_viewer_state.display == 'visual' ? 'collision' : 'visual'}</button>
   </div>
 </main>
 

@@ -175,15 +175,27 @@ export class UrdfParser {
     const xmlLinks = robotNode.getElementsByTagName('link');
     for (let i = 0; i < xmlLinks.length; i++) {
       const linkXmlNode = xmlLinks[i];
-      const visualXmlNodes = linkXmlNode.getElementsByTagName('visual');
-
-      const link = {visual: [] as IUrdfVisual[]} as IUrdfLink;
+      
+      const link = {
+        visual: [],
+        collision: [],
+        highlight: false,
+        name: '',
+        elem: linkXmlNode
+      } as IUrdfLink;
       if (linkXmlNode.hasAttribute('name')) {
         link.name = linkXmlNode.getAttribute('name') as string;
         this.robot.links[link.name] = link;
       }
+
+      const visualXmlNodes = linkXmlNode.getElementsByTagName('visual');
       for (let j = 0; j < visualXmlNodes.length; j++) {
         link.visual.push(this.parseVisual(visualXmlNodes[j]));
+      }
+
+      const collisionXmlNodes = linkXmlNode.getElementsByTagName('collision');
+      for (let j = 0; j < collisionXmlNodes.length; j++) {
+        link.collision.push(this.parseVisual(collisionXmlNodes[j]));
       }
     }
   }
@@ -291,6 +303,7 @@ export class UrdfParser {
             }
           }
           visual.geometry = boxGeom;
+          visual.type = 'box';
           return;
       }
     }
@@ -335,6 +348,7 @@ export class UrdfParser {
           parent = {
             name: parentName,
             visual: [],
+            collision: [],
             elem: parentXml,
             highlight: false
           } as IUrdfLink
@@ -351,6 +365,7 @@ export class UrdfParser {
           child = {
             name: childName,
             visual: [],
+            collision: [],
             elem,
             highlight: false
           } as IUrdfLink

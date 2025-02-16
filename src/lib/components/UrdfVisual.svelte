@@ -10,22 +10,25 @@
   import type IUrdfCylinder from "../models/IUrdfCylinder";
   import type IUrdfBox from "../models/IUrdfBox";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
+  import { Color } from "three";
 
   interface Props {
     visual?: IUrdfVisual
     link?: IUrdfLink
     onselectionchange?: (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => void
+    opacity: number
   }
 
   let {
     visual,
     link,
-    onselectionchange = undefined
+    onselectionchange = undefined,
+    opacity = 1.0
   }: Props = $props();
 
   const color = $derived(
     link?.highlight ? urdf_viewer_state.highlightColor : numberArrayToColor(visual ? visual.color_rgba : undefined));
-  
+
   const onclick = (event: Event) => {
     event.stopPropagation();
     if (onselectionchange) {
@@ -35,6 +38,12 @@
   }
 
   interactivity();  
+
+  const rot = (rpy: [r: number, p: number, y: number]): [r: number, p: number, y: number] => {
+    return [
+      rpy[0] + Math.PI / 2, rpy[1], rpy[2]
+    ]
+  }
 </script>
 
 {#if visual}
@@ -46,6 +55,7 @@
         position={visual.origin_xyz || [0, 0, 0]}
         rotation={visual.origin_rpy || [0, 0, 0]}
         {color}
+        {opacity}
         scale={(visual.geometry as IUrdfMesh).scale || [1, 1, 1]} />
     {:else if (visual.geometry as IUrdfMesh).type === 'dae'}
       <DAE
@@ -61,7 +71,7 @@
       <T.Mesh castShadow receiveShadow
         {onclick}
         position={visual.origin_xyz || [0, 0, 0]}
-        rotation={visual.origin_rpy || [0, 0, 0]}>
+        rotation={rot(visual.origin_rpy || [0, 0, 0])}>
         <!-- cylinder are rotated 90° in Three compared to urdf -->
         <T.CylinderGeometry 
           args={[
@@ -69,7 +79,7 @@
             (visual.geometry as IUrdfCylinder).radius,
             (visual.geometry as IUrdfCylinder).length]}
         />
-        <T.MeshBasicMaterial {color} />
+        <T.MeshBasicMaterial {color} {opacity} transparent={opacity < 1.0} />
       </T.Mesh>
     {:else if visual.type === 'box'}
       <T.Mesh castShadow receiveShadow
@@ -78,7 +88,7 @@
         position={visual.origin_xyz || [0, 0, 0]}
         rotation={visual.origin_rpy || [0, 0, 0]}>
         <T.BoxGeometry />
-        <T.MeshBasicMaterial {color} />
+        <T.MeshBasicMaterial {color} {opacity} transparent={opacity < 1.0} />
       </T.Mesh>
     {/if}
   {/if}

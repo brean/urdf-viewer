@@ -12,6 +12,8 @@ export const urdf_viewer_state = $state<{
     editMode?: "translate" | "rotate" | "scale"
     display: 'visual' | 'collision'
     highlightColor: Color
+    visualOpacity: number,
+    collisionOpacity: number
 }>({
     edit: false,
     editMode: 'translate',
@@ -20,5 +22,7 @@ export const urdf_viewer_state = $state<{
     continuousJoints: {},
     revoluteJoints: {},
     display: 'visual',
-    highlightColor: new Color(2, 0.5, 0.5)
+    highlightColor: new Color(2, 0.5, 0.5),
+    visualOpacity: 1.0,
+    collisionOpacity: 0.7
 });

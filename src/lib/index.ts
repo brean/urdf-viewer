@@ -1,6 +1,7 @@
 import DAE from "./components/DAE.svelte";
 import Grid from "./components/Grid.svelte";
 import STL from "./components/STL.svelte";
+import SelectableJoint from "./components/SelectableJoint.svelte";
 import ThreeStage from "./components/ThreeStage.svelte";
 import UrdfJoint from "./components/UrdfJoint.svelte";
 import UrdfThree from "./components/UrdfThree.svelte";
@@ -19,8 +20,11 @@ import type IUrdfMesh from "./models/IUrdfMesh";
 import type IUrdfRobot from "./models/IUrdfRobot";
 import type IUrdfVisual from "./models/IUrdfVisual";
 
-export { DAE, Grid, STL, ThreeStage, UrdfJoint, UrdfThree, UrdfVisual, 
+export { DAE, Grid, STL, ThreeStage, UrdfJoint, UrdfThree, 
+    UrdfVisual, SelectableJoint,
     urdf_viewer_state, UrdfParser, getRootJoints, getChildJoints,
-    xyzFromString, rpyFromString, rgbaFromString, numberArrayToColor, numberStringToArray,radToEuler }
+    xyzFromString, rpyFromString, rgbaFromString, numberArrayToColor, numberStringToArray,radToEuler };
 
-export type { IUrdfBox, IUrdfCylinder, IUrdfJoint, IUrdfLink, IUrdfMesh, IUrdfRobot, IUrdfVisual };
+export type {
+    IUrdfBox, IUrdfCylinder, IUrdfJoint, IUrdfLink,
+    IUrdfMesh, IUrdfRobot, IUrdfVisual };

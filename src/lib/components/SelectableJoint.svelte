@@ -41,7 +41,6 @@ group-->
   }
 
   const onobjectChange = (event: any) => {
-    console.log(joint.elem)
     if (!event.target) {
       return;
     }
