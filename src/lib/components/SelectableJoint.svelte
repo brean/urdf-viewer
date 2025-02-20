@@ -9,17 +9,20 @@ group-->
   import type IUrdfJoint from "$lib/models/IUrdfJoint";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
   import { updateJoint } from "$lib/UrdfParser";
+  import UrdfJoint from "./UrdfJoint.svelte";
 
   interface Props {
     joint: IUrdfJoint
     children?: Snippet // renderable
     selected?: boolean
+    onchange?: (joint: UrdfJoint) => void
   }
 
   let {
     joint = $bindable(),
     children,
-    selected = false
+    selected = false,
+    onchange = undefined
   }: Props = $props();
 
   const rot = ((): [x: number, y: number, z: number] => {
@@ -46,6 +49,9 @@ group-->
     }
     const obj = event.target.object;
     updateData(obj);
+    if (onchange) {
+      onchange(joint)
+    }
   };
 
   interactivity();

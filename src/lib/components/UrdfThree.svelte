@@ -11,11 +11,13 @@
     position?: [x: number, y: number, z: number]
     quaternion?: [x: number, y: number, z: number, w:number]
     onselectionchange?: (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => void
+    onchange?: (joint: UrdfJoint) => void
   }
   let {
     position = [0, 0, 0],
     quaternion,
-    onselectionchange
+    onselectionchange = undefined,
+    onchange = undefined
   }: Props = $props();
   
   // the axis in Three are different from urdf
@@ -32,6 +34,7 @@
   {#each getRootJoints(urdf_viewer_state.robot) as joint}
     <UrdfJoint
       {joint}
+      {onchange} 
       {onselectionchange}
     />
   {/each}
