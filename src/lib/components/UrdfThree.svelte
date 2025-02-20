@@ -2,16 +2,17 @@
   // Three.js visualisation of a URDF.
 	import { T } from '@threlte/core';
   import { Quaternion, Vector3 } from 'three';
-  import UrdfJoint from './UrdfJoint.svelte';
   import { getRootJoints } from '../UrdfParser';
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
   import type IUrdfLink from '$lib/models/IUrdfLink';
+  import type IUrdfJoint from '$lib/models/IUrdfJoint';
+  import UrdfJoint from './UrdfJoint.svelte';
 
   interface Props {
     position?: [x: number, y: number, z: number]
     quaternion?: [x: number, y: number, z: number, w:number]
     onselectionchange?: (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => void
-    onchange?: (joint: UrdfJoint) => void
+    onchange?: (joint: IUrdfJoint) => void
   }
   let {
     position = [0, 0, 0],

@@ -11,7 +11,7 @@
   interface Props {
     joint: IUrdfJoint
     onselectionchange?: (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => void
-    onchange?: (joint: UrdfJoint) => void
+    onchange?: (joint: IUrdfJoint) => void
   }
 
   let {
