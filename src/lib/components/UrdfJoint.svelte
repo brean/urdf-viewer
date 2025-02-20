@@ -47,6 +47,9 @@
     {/each}
   {/if}
   {#each getChildJoints(urdf_viewer_state.robot, joint.child) as child}
-    <UrdfJoint {onselectionchange} joint={child} />
+    <UrdfJoint 
+      {onchange} 
+      {onselectionchange}
+      joint={child} />
   {/each}
 {/if}
