@@ -49,7 +49,7 @@ group-->
     const obj = event.target.object;
     updateData(obj);
     if (onchange) {
-      onchange(joint)
+      onchange(event)
     }
   };
 

@@ -40,6 +40,10 @@
     <color rgba="1.0 1.0 1.0 1.0" />
   </material>
 
+  <material name="trans_red">
+    <color rgba="1.0 0.0 0.0 0.5" />
+  </material>
+
   <link name="base_footprint"/>
 
   <joint name="base_joint" type="fixed">
@@ -199,4 +203,13 @@
     </inertial>
   </link>
 
+  <link name="my_link">
+    <visual>
+      <origin xyz="-.15 0 0.1" rpy="0 0 0"/>
+      <material name="trans_red"/>
+      <geometry>
+        <box size="0.03 0.3 0.2"/>
+      </geometry>
+    </visual>
+  </link>
 </robot>

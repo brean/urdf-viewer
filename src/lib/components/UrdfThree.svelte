@@ -1,12 +1,13 @@
 <script lang="ts">
-  // Three.js visualisation of a URDF.
+  // Three.js visualization of an URDF.
 	import { T } from '@threlte/core';
   import { Quaternion, Vector3 } from 'three';
-  import { getRootJoints } from '../UrdfParser';
+  import { getRootJoints, getRootLinks } from '../UrdfParser';
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
   import type IUrdfLink from '$lib/models/IUrdfLink';
   import type IUrdfJoint from '$lib/models/IUrdfJoint';
   import UrdfJoint from './UrdfJoint.svelte';
+  import UrdfLink from './UrdfLink.svelte';
 
   interface Props {
     position?: [x: number, y: number, z: number]
@@ -28,16 +29,13 @@
     quaternion = [quat.x, quat.y, quat.z, quat.w];
   }
 
+// TODO: getRootLinks?
 </script>
 
 {#if urdf_viewer_state.robot}
 <T.Group {position} {quaternion}>
-  {#each getRootJoints(urdf_viewer_state.robot) as joint}
-    <UrdfJoint
-      {joint}
-      {onchange} 
-      {onselectionchange}
-    />
+  {#each getRootLinks(urdf_viewer_state.robot) as link}
+    <UrdfLink {link} />
   {/each}
 </T.Group>
 {/if}

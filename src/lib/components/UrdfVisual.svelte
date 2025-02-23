@@ -10,7 +10,6 @@
   import type IUrdfCylinder from "../models/IUrdfCylinder";
   import type IUrdfBox from "../models/IUrdfBox";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
-  import { Color } from "three";
 
   interface Props {
     visual?: IUrdfVisual
@@ -39,7 +38,7 @@
 
   interactivity();  
 
-  const rot = (rpy: [r: number, p: number, y: number]): [r: number, p: number, y: number] => {
+  const rotation = (rpy: [r: number, p: number, y: number]): [r: number, p: number, y: number] => {
     return [
       rpy[0] + Math.PI / 2, rpy[1], rpy[2]
     ]
@@ -71,7 +70,7 @@
       <T.Mesh castShadow receiveShadow
         {onclick}
         position={visual.origin_xyz || [0, 0, 0]}
-        rotation={rot(visual.origin_rpy || [0, 0, 0])}>
+        rotation={rotation(visual.origin_rpy || [0, 0, 0])}>
         <!-- cylinder are rotated 90° in Three compared to urdf -->
         <T.CylinderGeometry 
           args={[

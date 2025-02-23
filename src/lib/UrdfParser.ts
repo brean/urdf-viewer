@@ -11,6 +11,26 @@ import type IUrdfCylinder from "./models/IUrdfCylinder";
 import type IUrdfBox from "./models/IUrdfBox";
 import type IUrdfRobot from "./models/IUrdfRobot";
 
+export function getRootLinks(robot: IUrdfRobot): IUrdfLink[] {
+  const links: IUrdfLink[] = [];
+  const joints = robot.joints;
+  for (const link of Object.values(robot.links)) {
+    let isRoot = true;
+    for (const joint of joints) {
+      if (joint.child.name == link.name) {
+        isRoot = false;
+        console.log(link.name, joint.child.name)
+        break
+      }
+    }
+    if (isRoot) {
+      links.push(link);
+    }
+  }
+  console.log(links);
+  return links;
+}
+
 export function getRootJoints(robot:IUrdfRobot): IUrdfJoint[] {
   // get the root joint(s)
   const joints = robot.joints;
@@ -110,7 +130,9 @@ export class UrdfParser {
     this.robot.name = robotNode.getAttribute("name") as string
     // fill colors object
     this.parseColorsFromRobot(robotNode);
+    // get all links first
     this.parseLinks(robotNode);
+    // connect previously parsed links by joints
     this.parseJoints(robotNode);
     return this.robot;
   }
@@ -186,6 +208,8 @@ export class UrdfParser {
       if (linkXmlNode.hasAttribute('name')) {
         link.name = linkXmlNode.getAttribute('name') as string;
         this.robot.links[link.name] = link;
+      } else {
+        console.error('No name in xml link node: ', linkXmlNode)
       }
 
       const visualXmlNodes = linkXmlNode.getElementsByTagName('visual');
@@ -311,8 +335,9 @@ export class UrdfParser {
   }
 
   parseJoints(robotNode: Element) {
-    const links = this.robot.links;
-    const joints = this.robot.joints;
+    const links: { [name: string]: IUrdfLink } = this.robot.links;
+    const joints: IUrdfJoint[] = [];
+    this.robot.joints = joints;
     // parse all joints
     const xmlJoints = robotNode.getElementsByTagName('joint');
     for (let i = 0; i < xmlJoints.length; i++) {

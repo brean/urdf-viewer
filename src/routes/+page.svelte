@@ -124,10 +124,30 @@
       
       {/each}
     {/if}
-    <button onclick={() => {
-      // todo switch visual/collision
-      urdf_viewer_state.display = urdf_viewer_state.display == 'visual' ? 'collision' : 'visual'
-    }}>{urdf_viewer_state.display == 'visual' ? 'collision' : 'visual'}</button>
+    <hr />
+
+    <input
+      type="checkbox"
+      id="_urdf_visual"
+      bind:checked={urdf_viewer_state.visual}>
+    <label for="_urdf_visual">Visual</label>
+    <br />
+
+    <input
+      type="checkbox"
+      id="_urdf_collision"
+      bind:checked={urdf_viewer_state.collision}>
+    <label for="_urdf_collision">Collision</label><br />
+    <input
+      type="checkbox"
+      id="_urdf_links"
+      bind:checked={urdf_viewer_state.links}>
+    <label for="_urdf_links">Links</label><br />
+    <input
+      type="checkbox"
+      id="_urdf_joints"
+      bind:checked={urdf_viewer_state.joints}>
+    <label for="_urdf_joints">Joints</label><br />
   </div>
 </main>
 
