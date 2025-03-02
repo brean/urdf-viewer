@@ -5,7 +5,7 @@
   import { onMount } from 'svelte';
 
   import { Canvas, T } from '@threlte/core';
-  import { OrbitControls } from '@threlte/extras';
+  import { Gizmo, OrbitControls } from '@threlte/extras';
   import UrdfThree from '$lib/components/UrdfThree.svelte';
   import ThreeStage from '$lib/components/ThreeStage.svelte';
 
@@ -30,9 +30,19 @@
   onMount(async () => {
     let promise = parser.load();
     let code = await promise;
+    
     urdf_viewer_state.continuousJoints = {};
     urdf_viewer_state.revoluteJoints = {};
-    urdf_viewer_state.robot = parser.fromString(code);
+    const robot = parser.fromString(code);
+    robot.joints.forEach((joint) => {
+      if (joint.type == "continuous" && joint.name) {
+        urdf_viewer_state.continuousJoints[joint.name] = joint;
+      } else if (joint.type == "revolute" && joint.name) {
+        urdf_viewer_state.revoluteJoints[joint.name] = joint;
+      }
+    })
+    urdf_viewer_state.robot = robot;
+
   });
 
   let onselectionchange = (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => {
@@ -70,7 +80,9 @@
       <T.PerspectiveCamera
         makeDefault
         position={[.6, .6, .6]} fov={25}>
-        <OrbitControls enableZoom={true} />
+        <OrbitControls enableZoom={true}>
+          <Gizmo />
+        </OrbitControls>
       </T.PerspectiveCamera>
 
       <ThreeStage preset_name="soft" />
@@ -125,6 +137,30 @@
       {/each}
     {/if}
     <hr />
+    <input
+      type="range"
+      oninput={() => {
+        urdf_viewer_state.visualOpacity = Number(urdf_viewer_state.visualOpacity);
+      }}
+      min={0}
+      max={1}
+      step={0.1}
+      bind:value={urdf_viewer_state.visualOpacity}
+      id="_visual_opacity" /><br />
+    <label for="_visual_opacity">Visual Opacity</label>
+
+    <input
+      type="range"
+      oninput={() => {
+        urdf_viewer_state.collisionOpacity = Number(urdf_viewer_state.collisionOpacity);
+      }}
+      min={0}
+      max={1}
+      step={0.1}
+      bind:value={urdf_viewer_state.collisionOpacity}
+      id="_collision_opacity" /><br />
+    <label for="_collision_opacity">Collision Opacity</label>
+    <hr />
 
     <input
       type="checkbox"
@@ -145,9 +181,19 @@
     <label for="_urdf_links">Links</label><br />
     <input
       type="checkbox"
+      id="_urdf_linknames"
+      bind:checked={urdf_viewer_state.linkNames}>
+    <label for="_urdf_linknames">Link names</label><br />
+    <input
+      type="checkbox"
       id="_urdf_joints"
       bind:checked={urdf_viewer_state.joints}>
     <label for="_urdf_joints">Joints</label><br />
+    <input
+      type="checkbox"
+      id="_urdf_jointnames"
+      bind:checked={urdf_viewer_state.jointNames}>
+    <label for="_urdf_jointnames">Joint names</label><br />
   </div>
 </main>
 

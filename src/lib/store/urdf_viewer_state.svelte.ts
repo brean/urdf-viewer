@@ -15,6 +15,8 @@ export const urdf_viewer_state = $state<{
     collision: boolean
     joints: boolean
     links: boolean
+    jointNames: boolean
+    linkNames: boolean
     highlightColor: Color
     visualOpacity: number
     linkColor: Color
@@ -29,12 +31,14 @@ export const urdf_viewer_state = $state<{
     continuousJoints: {},
     revoluteJoints: {},
     visual: true,
-    collision: true,
+    collision: false,
     joints: true,
     links: true,
+    jointNames: true,
+    linkNames: true,
     linkColor: new Color('green'),
     linkOpacity: 1.0,
     highlightColor: new Color(2, 0.5, 0.5),
-    visualOpacity: .8,
+    visualOpacity: 1.0,
     collisionOpacity: 0.7
 });

@@ -1,15 +1,12 @@
 <script lang="ts">
   // The link element describes a rigid body with an inertia, visual features, and collision properties. 
-  import { numberArrayToColor } from "$lib/helper";
   import type IUrdfLink from "$lib/models/IUrdfLink";
-  import type IUrdfVisual from "$lib/models/IUrdfVisual";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
-  import { T } from "@threlte/core";
-  import Selectable from "./SelectableJoint.svelte";
   import { onMount } from "svelte";
   import UrdfVisual from "./UrdfVisual.svelte";
   import { getChildJoints } from "$lib/UrdfParser";
   import UrdfJoint from "./UrdfJoint.svelte";
+  import { Billboard, Text } from "@threlte/extras";
 
   interface Props {
     link: IUrdfLink
@@ -46,17 +43,15 @@ we can show an arrow from the parent joint to the child joint -->
 <!-- TODO: select and edit -->
 {#if urdf_viewer_state.robot}
   {@html `<!-- Link ${link.name} -->`}
-  <!-- {#if urdf_viewer_state.links }
-  <T.Mesh>
-    <T.SphereGeometry 
-      args={[0.005]}
-    />
-    <T.MeshBasicMaterial
-      color={urdf_viewer_state.linkColor}
-      opacity={urdf_viewer_state.linkOpacity} 
-      transparent={urdf_viewer_state.linkOpacity < 1.0} />
-  </T.Mesh>
-  {/if} -->
+
+  {#if urdf_viewer_state.linkNames }
+  <Billboard>
+    <Text
+      color={"#88ff88"}
+      scale={[0.1, 0.1, 0.1]}
+      text={link.name}></Text>
+  </Billboard>
+  {/if}
 
   {#if urdf_viewer_state.visual }
     {#each link.visual as visual}

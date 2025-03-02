@@ -78,7 +78,11 @@
             (visual.geometry as IUrdfCylinder).radius,
             (visual.geometry as IUrdfCylinder).length]}
         />
-        <T.MeshBasicMaterial {color} {opacity} transparent={opacity < 1.0} />
+        {#if opacity < 1.0}
+        <T.MeshBasicMaterial {color} {opacity} transparent={true} />
+        {:else}
+        <T.MeshBasicMaterial {color} />
+        {/if}
       </T.Mesh>
     {:else if visual.type === 'box'}
       <T.Mesh castShadow receiveShadow
@@ -87,7 +91,11 @@
         position={visual.origin_xyz || [0, 0, 0]}
         rotation={visual.origin_rpy || [0, 0, 0]}>
         <T.BoxGeometry />
-        <T.MeshBasicMaterial {color} {opacity} transparent={opacity < 1.0} />
+        {#if opacity < 1.0}
+        <T.MeshBasicMaterial {color} {opacity} transparent={true} />
+        {:else}
+        <T.MeshBasicMaterial {color} />
+        {/if}
       </T.Mesh>
     {/if}
   {/if}

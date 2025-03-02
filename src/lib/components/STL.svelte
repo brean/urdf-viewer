@@ -34,6 +34,10 @@
   <T.Mesh castShadow receiveShadow geometry={$stl} {scale}
     {onclick}
     {position} {rotation}>
-		<T.MeshLambertMaterial {color} {opacity} transparent={opacity < 1.0} />
+    {#if opacity < 1.0}
+		<T.MeshLambertMaterial {color} {opacity} transparent={true} />
+    {:else}
+    <T.MeshLambertMaterial {color} />
+    {/if}
 	</T.Mesh>
 {/if}
