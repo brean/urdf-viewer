@@ -6,7 +6,7 @@
   import { T } from "@threlte/core";
   import UrdfLink from "./UrdfLink.svelte";
   import { BufferGeometry, Vector3 } from "three";
-  import { Billboard, Text } from "@threlte/extras";
+  import { Billboard, MeshLineGeometry, Text } from "@threlte/extras";
 
   interface Props {
     joint: IUrdfJoint
@@ -27,21 +27,6 @@
   }
 
   let opacity = 0.7
-
-  let lineGeometry: BufferGeometry | undefined = $state();
-
-  $effect(() => {
-    const lineGeometryPoints: Vector3[] = [
-      new Vector3(0, 0, 0),
-      new Vector3(
-        joint.origin_xyz[0], joint.origin_xyz[1], joint.origin_xyz[2]
-      )
-    ];
-    if (!lineGeometry) {
-      lineGeometry = new BufferGeometry()
-    }
-    lineGeometry.setFromPoints(lineGeometryPoints);
-  });
 
   // a joint can have an origin position, its the difference to the
   // parent to the joint origin,
@@ -64,7 +49,8 @@
 
   <!-- draw red line from parent-frame to joint origin -->
   {#if urdf_viewer_state.links }
-  <T.Line geometry={lineGeometry} {onclick}>
+  <T.Line {onclick}>
+    <MeshLineGeometry points={[new Vector3(0, 0, 0), new Vector3(joint.origin_xyz[0], joint.origin_xyz[1], joint.origin_xyz[2])]} />
     <T.LineBasicMaterial
       color={"#ff0000"}
     />
@@ -77,12 +63,19 @@
     position={joint.origin_xyz}>
 
     {#if urdf_viewer_state.joints }
-      
+      <T.Line>
+        <MeshLineGeometry points={[new Vector3(0, 0, 0), new Vector3(0, -.02, 0)]} />
+        <T.LineBasicMaterial
+          color={"#0000ff"}
+        />
+      </T.Line>  
+
       <T.Mesh
         rotation={rotation([0, 0, 0])}>
+        <!-- TODO: default to z-up -->
         <!-- cylinder are rotated 90° in Three compared to urdf -->
         <T.CylinderGeometry
-          args={[0.005, 0.005, 0.05]}
+          args={[0.004, 0.004, 0.03]}
         />
         {#if opacity < 1.0}
         <T.MeshBasicMaterial color={'green'} {opacity} transparent={true} />

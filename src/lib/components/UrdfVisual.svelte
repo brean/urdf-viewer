@@ -71,6 +71,7 @@
         {onclick}
         position={visual.origin_xyz || [0, 0, 0]}
         rotation={rotation(visual.origin_rpy || [0, 0, 0])}>
+        <!-- TODO: default to z-up -->
         <!-- cylinder are rotated 90° in Three compared to urdf -->
         <T.CylinderGeometry 
           args={[
