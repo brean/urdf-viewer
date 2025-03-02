@@ -31,9 +31,9 @@
   const onclick = (event: Event) => {
     event.stopPropagation();
     if (onselectionchange) {
-      onselectionchange(urdf_viewer_state.selection, link);
+      onselectionchange(urdf_viewer_state.selectedLink, link);
     }
-    urdf_viewer_state.selection = link;
+    urdf_viewer_state.selectedLink = link;
   }
 
   interactivity();  

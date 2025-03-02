@@ -2,11 +2,10 @@
   // Three.js visualization of an URDF.
 	import { T } from '@threlte/core';
   import { Quaternion, Vector3 } from 'three';
-  import { getRootJoints, getRootLinks } from '../UrdfParser';
+  import { getRootLinks } from '../UrdfParser';
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
   import type IUrdfLink from '$lib/models/IUrdfLink';
   import type IUrdfJoint from '$lib/models/IUrdfJoint';
-  import UrdfJoint from './UrdfJoint.svelte';
   import UrdfLink from './UrdfLink.svelte';
 
   interface Props {

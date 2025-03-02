@@ -15,7 +15,7 @@
   }
 
   let {
-    joint = $bindable(),
+    joint,
     onselectionchange = undefined,
     onchange = undefined
   }: Props = $props();
@@ -66,12 +66,15 @@
   {#if urdf_viewer_state.links }
   <T.Line geometry={lineGeometry} {onclick}>
     <T.LineBasicMaterial
-        color={"#ff0000"}
+      color={"#ff0000"}
     />
   </T.Line>
   {/if}
 
-  <T.Group rotation={joint.rotation} position={joint.origin_xyz}>
+
+  <T.Group
+    rotation={joint.rotation}
+    position={joint.origin_xyz}>
 
     {#if urdf_viewer_state.joints }
       

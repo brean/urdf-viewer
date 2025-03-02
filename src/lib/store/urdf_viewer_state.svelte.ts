@@ -8,8 +8,8 @@ export const urdf_viewer_state = $state<{
     selectedJoint?: IUrdfJoint
     robot?: IUrdfRobot
     edit: boolean // add TransformControls when we can edit the element
-    continuousJoints: {[name: string]: IUrdfJoint}
-    revoluteJoints: {[name: string]: IUrdfJoint}
+    continuousJoints: {[name: string]: number}
+    revoluteJoints: {[name: string]: number}
     editMode?: "translate" | "rotate" | "scale"
     visual: boolean
     collision: boolean

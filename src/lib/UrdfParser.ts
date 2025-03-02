@@ -19,7 +19,6 @@ export function getRootLinks(robot: IUrdfRobot): IUrdfLink[] {
     for (const joint of joints) {
       if (joint.child.name == link.name) {
         isRoot = false;
-        console.log(link.name, joint.child.name)
         break
       }
     }
@@ -27,7 +26,6 @@ export function getRootLinks(robot: IUrdfRobot): IUrdfLink[] {
       links.push(link);
     }
   }
-  console.log(links);
   return links;
 }
 

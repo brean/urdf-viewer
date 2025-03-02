@@ -31,18 +31,20 @@
     let promise = parser.load();
     let code = await promise;
     
-    urdf_viewer_state.continuousJoints = {};
-    urdf_viewer_state.revoluteJoints = {};
     const robot = parser.fromString(code);
-    robot.joints.forEach((joint) => {
+    const continuousJoints: {[name: string]: number;} = {};
+    const revoluteJoints: {[name: string]: number;} = {};
+    for (let i = 0; i < robot.joints.length; i++) {
+      const joint = robot.joints[i];
       if (joint.type == "continuous" && joint.name) {
-        urdf_viewer_state.continuousJoints[joint.name] = joint;
+        continuousJoints[joint.name] = i;
       } else if (joint.type == "revolute" && joint.name) {
-        urdf_viewer_state.revoluteJoints[joint.name] = joint;
+        revoluteJoints[joint.name] = i;
       }
-    })
+    }
+    urdf_viewer_state.continuousJoints = continuousJoints;
+    urdf_viewer_state.revoluteJoints = revoluteJoints;
     urdf_viewer_state.robot = robot;
-
   });
 
   let onselectionchange = (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => {
@@ -96,20 +98,22 @@
 
   <!-- TODO: use snippet instead! -->
   <div class="joint_states">
-    {#if urdf_viewer_state.continuousJoints}
+    {#if urdf_viewer_state.robot && urdf_viewer_state.continuousJoints}
       <h3>Continuous Joints</h3>
-      {#each Object.entries(urdf_viewer_state.continuousJoints) as [name, joint]}
+      {#each Object.entries(urdf_viewer_state.continuousJoints) as [name, nr]}
         <input type="range" id={name} min="0" max="360" step="1" value="180"
           oninput={(e) => {
-            if (!e.target) {
+            if (!e.target || !urdf_viewer_state.robot) {
               return
             }
+            const joint = urdf_viewer_state.robot.joints[nr]
             const euler = e.target.value;
             const rad = euler * Math.PI / 180 - Math.PI;
             joint.rotation = [
               rad*joint.axis_xyz[0] + joint.origin_rpy[0],
               rad*joint.axis_xyz[1] + joint.origin_rpy[1],
               rad*joint.axis_xyz[2] + joint.origin_rpy[2]];
+            //console.log(joint.rotation);
           }}
         /><label for={name}>{name}</label>
       {/each}
@@ -128,9 +132,9 @@
             const euler = e.target.value;
             const rad = euler * Math.PI / 180 - Math.PI;
             joint.rotation = [
-              rad*joint.axis_xyz[0] + joint.origin_rpy[0],
-              rad*joint.axis_xyz[1] + joint.origin_rpy[1],
-              rad*joint.axis_xyz[2] + joint.origin_rpy[2]];
+              rad * joint.axis_xyz[0] + joint.origin_rpy[0],
+              rad * joint.axis_xyz[1] + joint.origin_rpy[1],
+              rad * joint.axis_xyz[2] + joint.origin_rpy[2]];
           }}
         /><label for={name}>{name}</label>
       

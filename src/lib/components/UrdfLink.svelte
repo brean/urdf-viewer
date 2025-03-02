@@ -2,7 +2,6 @@
   // The link element describes a rigid body with an inertia, visual features, and collision properties. 
   import type IUrdfLink from "$lib/models/IUrdfLink";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
-  import { onMount } from "svelte";
   import UrdfVisual from "./UrdfVisual.svelte";
   import { getChildJoints } from "$lib/UrdfParser";
   import UrdfJoint from "./UrdfJoint.svelte";
@@ -12,10 +11,6 @@
     link: IUrdfLink
     onchange?: (link: IUrdfLink) => void
   }
-
-  onMount(() => {
-    console.log(link.name)
-  });
 
   const onobjectChange = (event: any) => {
     if (!event.target) {
