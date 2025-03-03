@@ -20,6 +20,8 @@ export const urdf_viewer_state = $state<{
     highlightColor: Color
     visualOpacity: number
     linkColor: Color
+    jointColor: Color
+    jointIndicatorColor: Color
     linkOpacity: number
     collisionOpacity: number
 }>({
@@ -35,8 +37,10 @@ export const urdf_viewer_state = $state<{
     joints: true,
     links: true,
     jointNames: true,
+    jointColor: new Color('red'),
     linkNames: true,
     linkColor: new Color('green'),
+    jointIndicatorColor: new Color('blue'),
     linkOpacity: 1.0,
     highlightColor: new Color(2, 0.5, 0.5),
     visualOpacity: 1.0,

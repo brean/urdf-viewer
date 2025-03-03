@@ -9,19 +9,7 @@
 
   interface Props {
     link: IUrdfLink
-    onchange?: (link: IUrdfLink) => void
   }
-
-  const onobjectChange = (event: any) => {
-    if (!event.target) {
-      return;
-    }
-    const obj = event.target.object;
-    // updateData(obj);
-    // if (onchange) {
-    //   onchange(joint)
-    // }
-  };
 
   let {
     link
@@ -42,7 +30,7 @@ we can show an arrow from the parent joint to the child joint -->
   {#if urdf_viewer_state.linkNames }
   <Billboard>
     <Text
-      color={"#88ff88"}
+      color={urdf_viewer_state.linkColor}
       scale={[0.1, 0.1, 0.1]}
       text={link.name}></Text>
   </Billboard>

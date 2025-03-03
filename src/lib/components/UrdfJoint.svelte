@@ -41,7 +41,7 @@
         position.y={joint.origin_xyz[1] / 2}
         position.z={joint.origin_xyz[2] / 2}>
       <Text
-        color={"#ff8888"}
+        color={urdf_viewer_state.jointColor}
         scale={[0.1, 0.1, 0.1]}
         text={joint.name}></Text>
     </Billboard>
@@ -52,7 +52,7 @@
   <T.Line {onclick}>
     <MeshLineGeometry points={[new Vector3(0, 0, 0), new Vector3(joint.origin_xyz[0], joint.origin_xyz[1], joint.origin_xyz[2])]} />
     <T.LineBasicMaterial
-      color={"#ff0000"}
+      color={urdf_viewer_state.jointColor}
     />
   </T.Line>
   {/if}
@@ -66,7 +66,7 @@
       <T.Line>
         <MeshLineGeometry points={[new Vector3(0, 0, 0), new Vector3(0, -.02, 0)]} />
         <T.LineBasicMaterial
-          color={"#0000ff"}
+          color={urdf_viewer_state.jointIndicatorColor}
         />
       </T.Line>  
 
@@ -78,9 +78,13 @@
           args={[0.004, 0.004, 0.03]}
         />
         {#if opacity < 1.0}
-        <T.MeshBasicMaterial color={'green'} {opacity} transparent={true} />
+        <T.MeshBasicMaterial
+          color={urdf_viewer_state.linkColor}
+          {opacity}
+          transparent={true} />
         {:else}
-        <T.MeshBasicMaterial color={'green'} />
+        <T.MeshBasicMaterial
+          color={urdf_viewer_state.linkColor} />
         {/if}
       </T.Mesh>
     {/if}
