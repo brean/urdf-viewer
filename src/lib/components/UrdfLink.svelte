@@ -6,13 +6,16 @@
   import { getChildJoints } from "$lib/UrdfParser";
   import UrdfJoint from "./UrdfJoint.svelte";
   import { Billboard, Text } from "@threlte/extras";
+  import type IUrdfJoint from "$lib/models/IUrdfJoint";
 
   interface Props {
     link: IUrdfLink
+    parentJoint?: IUrdfJoint
   }
 
   let {
-    link
+    link,
+    parentJoint
   }: Props = $props();
 
 </script>
@@ -28,8 +31,9 @@ we can show an arrow from the parent joint to the child joint -->
   {@html `<!-- Link ${link.name} -->`}
 
   {#if urdf_viewer_state.linkNames }
-  <Billboard position={[0, -0.1, 0]}>
+  <Billboard position={[0, 0, 0]}>
     <Text
+      anchorY={-.2}
       color={urdf_viewer_state.linkColor}
       scale={[0.1, 0.1, 0.1]}
       text={link.name}></Text>

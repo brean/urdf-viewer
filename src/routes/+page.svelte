@@ -146,7 +146,7 @@
       oninput={() => {
         urdf_viewer_state.visualOpacity = Number(urdf_viewer_state.visualOpacity);
       }}
-      min={0}
+      min={0.1}
       max={1}
       step={0.1}
       bind:value={urdf_viewer_state.visualOpacity}
@@ -158,7 +158,7 @@
       oninput={() => {
         urdf_viewer_state.collisionOpacity = Number(urdf_viewer_state.collisionOpacity);
       }}
-      min={0}
+      min={0.1}
       max={1}
       step={0.1}
       bind:value={urdf_viewer_state.collisionOpacity}

@@ -68,7 +68,7 @@
         <T.LineBasicMaterial
           color={urdf_viewer_state.jointIndicatorColor}
         />
-      </T.Line>  
+      </T.Line>
 
       <T.Mesh
         rotation={rotation([0, 0, 0])}>

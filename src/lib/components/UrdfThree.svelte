@@ -34,7 +34,7 @@
 {#if urdf_viewer_state.robot}
 <T.Group {position} {quaternion}>
   {#each getRootLinks(urdf_viewer_state.robot) as link}
-    <UrdfLink {link} />
+    <UrdfLink {link} parentJoint={undefined}  />
   {/each}
 </T.Group>
 {/if}
