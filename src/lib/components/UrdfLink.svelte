@@ -28,7 +28,7 @@ we can show an arrow from the parent joint to the child joint -->
   {@html `<!-- Link ${link.name} -->`}
 
   {#if urdf_viewer_state.linkNames }
-  <Billboard>
+  <Billboard position={[0, -0.1, 0]}>
     <Text
       color={urdf_viewer_state.linkColor}
       scale={[0.1, 0.1, 0.1]}

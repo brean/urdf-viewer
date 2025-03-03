@@ -5,7 +5,7 @@
   import type IUrdfLink from "$lib/models/IUrdfLink";
   import { T } from "@threlte/core";
   import UrdfLink from "./UrdfLink.svelte";
-  import { BufferGeometry, Vector3 } from "three";
+  import { BufferGeometry, Color, Vector3 } from "three";
   import { Billboard, MeshLineGeometry, Text } from "@threlte/extras";
 
   interface Props {
@@ -37,9 +37,9 @@
 {#if urdf_viewer_state.robot}
   {#if urdf_viewer_state.jointNames }
     <Billboard
-        position.x={joint.origin_xyz[0] / 2}
-        position.y={joint.origin_xyz[1] / 2}
-        position.z={joint.origin_xyz[2] / 2}>
+        position.x={joint.origin_xyz[0]}
+        position.y={joint.origin_xyz[1]}
+        position.z={joint.origin_xyz[2]}>
       <Text
         color={urdf_viewer_state.jointColor}
         scale={[0.1, 0.1, 0.1]}
@@ -47,12 +47,12 @@
     </Billboard>
   {/if}
 
-  <!-- draw red line from parent-frame to joint origin -->
+  <!-- draw line from parent-frame to joint origin -->
   {#if urdf_viewer_state.links }
   <T.Line {onclick}>
     <MeshLineGeometry points={[new Vector3(0, 0, 0), new Vector3(joint.origin_xyz[0], joint.origin_xyz[1], joint.origin_xyz[2])]} />
     <T.LineBasicMaterial
-      color={urdf_viewer_state.jointColor}
+      color={new Color('red')}
     />
   </T.Line>
   {/if}
@@ -79,12 +79,12 @@
         />
         {#if opacity < 1.0}
         <T.MeshBasicMaterial
-          color={urdf_viewer_state.linkColor}
+          color={urdf_viewer_state.jointColor}
           {opacity}
           transparent={true} />
         {:else}
         <T.MeshBasicMaterial
-          color={urdf_viewer_state.linkColor} />
+          color={urdf_viewer_state.jointColor} />
         {/if}
       </T.Mesh>
     {/if}
