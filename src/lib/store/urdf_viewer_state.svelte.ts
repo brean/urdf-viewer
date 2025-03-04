@@ -13,15 +13,15 @@ export const urdf_viewer_state = $state<{
     editMode?: "translate" | "rotate" | "scale"
     visual: boolean
     collision: boolean
+    collisionColor: string
     joints: boolean
-    links: boolean
     jointNames: boolean
     linkNames: boolean
-    highlightColor: Color
+    highlightColor: string
     visualOpacity: number
-    linkColor: Color
-    jointColor: Color
-    jointIndicatorColor: Color
+    linkColor: string
+    jointColor: string
+    jointIndicatorColor: string
     linkOpacity: number
     collisionOpacity: number
 }>({
@@ -34,15 +34,15 @@ export const urdf_viewer_state = $state<{
     revoluteJoints: {},
     visual: true,
     collision: false,
+    collisionColor: "#deddda",
     joints: true,
-    links: true,
     jointNames: true,
-    jointColor: new Color('blue'),
+    jointColor: "#62a0ea", // blue
     linkNames: true,
-    linkColor: new Color('green'),
-    jointIndicatorColor: new Color('red'),
+    linkColor: "#57e389", // green
+    jointIndicatorColor: "#f66151", // red
     linkOpacity: 1.0,
-    highlightColor: new Color(2, 0.5, 0.5),
+    highlightColor: "#ffa348", // orange
     visualOpacity: 1.0,
     collisionOpacity: 0.7
 });

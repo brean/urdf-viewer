@@ -10,23 +10,33 @@
   import type IUrdfCylinder from "../models/IUrdfCylinder";
   import type IUrdfBox from "../models/IUrdfBox";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
+  import { Color } from "three";
 
   interface Props {
     visual?: IUrdfVisual
-    link?: IUrdfLink
+    link: IUrdfLink
     onselectionchange?: (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => void
     opacity: number
+    color?: string
   }
 
   let {
     visual,
     link,
     onselectionchange = undefined,
-    opacity = 1.0
+    opacity = 1.0,
+    color = undefined
   }: Props = $props();
 
-  const color = $derived(
-    link?.highlight ? urdf_viewer_state.highlightColor : numberArrayToColor(visual ? visual.color_rgba : undefined));
+  function getColor(): Color {
+    if (urdf_viewer_state.selectedLink == link) {
+      return new Color(urdf_viewer_state.highlightColor);
+    }
+    if (visual?.color_rgba) {
+      return numberArrayToColor(visual.color_rgba)
+    }
+    return new Color(color || 'gray')
+  }
 
   const onclick = (event: Event) => {
     event.stopPropagation();
@@ -34,6 +44,7 @@
       onselectionchange(urdf_viewer_state.selectedLink, link);
     }
     urdf_viewer_state.selectedLink = link;
+    urdf_viewer_state.selectedJoint = undefined;
   }
 
   interactivity();  
@@ -53,7 +64,7 @@
         filename={(visual.geometry as IUrdfMesh).filename}
         position={visual.origin_xyz || [0, 0, 0]}
         rotation={visual.origin_rpy || [0, 0, 0]}
-        {color}
+        color={getColor()}
         {opacity}
         scale={(visual.geometry as IUrdfMesh).scale || [1, 1, 1]} />
     {:else if (visual.geometry as IUrdfMesh).type === 'dae'}
@@ -62,7 +73,7 @@
         filename={(visual.geometry as IUrdfMesh).filename}
         position={visual.origin_xyz || [0, 0, 0]}
         rotation={visual.origin_rpy || [0, 0, 0]}
-        {color}
+        color={getColor()}
         scale={(visual.geometry as IUrdfMesh).scale || [1, 1, 1]} />
     {/if}
   {:else}
@@ -80,9 +91,9 @@
             (visual.geometry as IUrdfCylinder).length]}
         />
         {#if opacity < 1.0}
-        <T.MeshBasicMaterial {color} {opacity} transparent={true} />
+        <T.MeshBasicMaterial color={getColor()} {opacity} transparent={true} />
         {:else}
-        <T.MeshBasicMaterial {color} />
+        <T.MeshBasicMaterial color={getColor()} />
         {/if}
       </T.Mesh>
     {:else if visual.type === 'box'}
@@ -93,9 +104,9 @@
         rotation={visual.origin_rpy || [0, 0, 0]}>
         <T.BoxGeometry />
         {#if opacity < 1.0}
-        <T.MeshBasicMaterial {color} {opacity} transparent={true} />
+        <T.MeshBasicMaterial color={getColor()} {opacity} transparent={true} />
         {:else}
-        <T.MeshBasicMaterial {color} />
+        <T.MeshBasicMaterial color={getColor()} />
         {/if}
       </T.Mesh>
     {/if}

@@ -199,7 +199,6 @@ export class UrdfParser {
       const link = {
         visual: [],
         collision: [],
-        highlight: false,
         name: '',
         elem: linkXmlNode
       } as IUrdfLink;
@@ -373,7 +372,6 @@ export class UrdfParser {
             visual: [],
             collision: [],
             elem: parentXml,
-            highlight: false
           } as IUrdfLink
         }
       }
@@ -390,7 +388,6 @@ export class UrdfParser {
             visual: [],
             collision: [],
             elem,
-            highlight: false
           } as IUrdfLink
         }
       }

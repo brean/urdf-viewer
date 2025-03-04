@@ -48,14 +48,7 @@
   });
 
   let onselectionchange = (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => {
-    if (prev) {
-      prev.highlight = false;
-      prev = prev
-    }
-    if (next) {
-      next.highlight = true;
-      next = next
-    }
+
   }
 
 </script>
@@ -178,10 +171,6 @@
       id="_urdf_collision"
       bind:checked={urdf_viewer_state.collision}>
     <label for="_urdf_collision">Collision</label><br />
-    <input
-      type="checkbox"
-      id="_urdf_links"
-      bind:checked={urdf_viewer_state.links}>
     <label for="_urdf_links">Links</label><br />
     <input
       type="checkbox"
@@ -198,6 +187,53 @@
       id="_urdf_jointnames"
       bind:checked={urdf_viewer_state.jointNames}>
     <label for="_urdf_jointnames">Joint names</label><br />
+    <!-- colors -->
+    <input
+      id="_urdf_jointcolor"
+      bind:value={urdf_viewer_state.jointColor}
+      type="color" />
+    <label for="_urdf_jointcolor">Joint color</label><br />
+    
+    <input
+      id="_urdf_linkcolor"
+      bind:value={urdf_viewer_state.linkColor}
+      type="color" />
+    <label for="_urdf_linkcolor">Link color</label><br />
+    
+    <input
+      id="_urdf_jointindicolor"
+      bind:value={urdf_viewer_state.jointIndicatorColor}
+      type="color" />
+    <label for="_urdf_jointindicolor">Joint indicator color</label><br />
+
+    <input
+      id="_urdf_highlightcolor"
+      bind:value={urdf_viewer_state.highlightColor}
+      type="color" />
+    <label for="_urdf_highlightcolor">Highlight color</label><br />
+
+    <input
+      id="_urdf_collisioncolor"
+      bind:value={urdf_viewer_state.collisionColor}
+      type="color" />
+    <label for="_urdf_collisioncolor">Collision color</label><br />
+
+    <br />
+    Selected:<br />
+    {#if urdf_viewer_state.selectedJoint}
+      joint: {urdf_viewer_state.selectedJoint.name}<br />
+      origin: {urdf_viewer_state.selectedJoint.origin_xyz}
+    {/if}
+    {#if urdf_viewer_state.selectedLink}
+    link: {urdf_viewer_state.selectedLink.name}<br />
+    visuals: <br />
+    {#if urdf_viewer_state.selectedLink.visual}
+      {#each urdf_viewer_state.selectedLink.visual as visual}
+      &nbsp;-&nbsp;origin: {visual.origin_xyz} ({visual.type}) <br />
+      {/each}
+    
+    {/if}
+    {/if}
   </div>
 </main>
 

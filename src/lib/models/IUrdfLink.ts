@@ -5,5 +5,4 @@ export default interface IUrdfLink {
   visual: IUrdfVisual[]
   collision: IUrdfVisual[]
   elem: Element
-  highlight: boolean
 }

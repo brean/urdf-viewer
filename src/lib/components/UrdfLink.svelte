@@ -7,6 +7,7 @@
   import UrdfJoint from "./UrdfJoint.svelte";
   import { Billboard, Text } from "@threlte/extras";
   import type IUrdfJoint from "$lib/models/IUrdfJoint";
+  import { Color } from "three";
 
   interface Props {
     link: IUrdfLink
@@ -22,9 +23,9 @@
 
 <!-- 
 a link does not have a position, 
+so we show the Billboard text just 0.2 meter above the joints origin.
 however visual and collision can have positions and its
-position can be defined by the child origin from a joint,
-we can show an arrow from the parent joint to the child joint -->
+position can be defined by the child origin from a joint, -->
 
 <!-- TODO: select and edit -->
 {#if urdf_viewer_state.robot}
@@ -34,7 +35,7 @@ we can show an arrow from the parent joint to the child joint -->
   <Billboard position={[0, 0, 0]}>
     <Text
       anchorY={-.2}
-      color={urdf_viewer_state.linkColor}
+      color={urdf_viewer_state.selectedLink == link ? urdf_viewer_state.highlightColor : urdf_viewer_state.linkColor}
       scale={[0.1, 0.1, 0.1]}
       text={link.name}></Text>
   </Billboard>
@@ -42,13 +43,20 @@ we can show an arrow from the parent joint to the child joint -->
 
   {#if urdf_viewer_state.visual }
     {#each link.visual as visual}
-      <UrdfVisual opacity={urdf_viewer_state.visualOpacity} {visual} {link} />  
+      <UrdfVisual
+        opacity={urdf_viewer_state.visualOpacity}
+        {visual}
+        {link} />  
     {/each}
   {/if}
 
   {#if urdf_viewer_state.collision }
     {#each link.collision as col}
-      <UrdfVisual opacity={urdf_viewer_state.collisionOpacity} visual={col} {link} />
+      <UrdfVisual
+        opacity={urdf_viewer_state.collisionOpacity}
+        visual={col}
+        color={urdf_viewer_state.collisionColor}
+        {link} />
     {/each}
   {/if}
 

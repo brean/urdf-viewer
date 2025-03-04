@@ -6,7 +6,7 @@
   import { T } from "@threlte/core";
   import UrdfLink from "./UrdfLink.svelte";
   import { BufferGeometry, Color, Vector3 } from "three";
-  import { Billboard, MeshLineGeometry, Text } from "@threlte/extras";
+  import { Billboard, interactivity, MeshLineGeometry, Text } from "@threlte/extras";
 
   interface Props {
     joint: IUrdfJoint
@@ -28,6 +28,12 @@
 
   let opacity = 0.7
 
+  const onclick = () => {
+    urdf_viewer_state.selectedLink = undefined;
+    urdf_viewer_state.selectedJoint = joint;
+  }
+
+  interactivity();
   // a joint can have an origin position, its the difference to the
   // parent to the joint origin,
   // at this position we draw a cylinder
@@ -41,18 +47,18 @@
         position.y={joint.origin_xyz[1]}
         position.z={joint.origin_xyz[2]}>
       <Text
-        color={urdf_viewer_state.jointColor}
+        color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor}
         scale={[0.1, 0.1, 0.1]}
         text={joint.name}></Text>
     </Billboard>
   {/if}
 
   <!-- draw line from parent-frame to joint origin -->
-  {#if urdf_viewer_state.links }
-  <T.Line {onclick}>
+  {#if urdf_viewer_state.joints }
+  <T.Line>
     <MeshLineGeometry points={[new Vector3(0, 0, 0), new Vector3(joint.origin_xyz[0], joint.origin_xyz[1], joint.origin_xyz[2])]} />
     <T.LineBasicMaterial
-      color={new Color('red')}
+      color={urdf_viewer_state.jointColor}
     />
   </T.Line>
   {/if}
@@ -64,13 +70,18 @@
 
     {#if urdf_viewer_state.joints }
       <T.Line>
-        <MeshLineGeometry points={[new Vector3(0, 0, 0), new Vector3(0, -.02, 0)]} />
+        <MeshLineGeometry
+        {onclick}
+          points={[new Vector3(0, 0, 0), new Vector3(0, -.02, 0)]} />
         <T.LineBasicMaterial
-          color={urdf_viewer_state.jointIndicatorColor}
+          color={
+            urdf_viewer_state.jointIndicatorColor
+          }
         />
       </T.Line>
 
       <T.Mesh
+        {onclick}
         rotation={rotation([0, 0, 0])}>
         <!-- TODO: default to z-up -->
         <!-- cylinder are rotated 90° in Three compared to urdf -->
@@ -79,12 +90,12 @@
         />
         {#if opacity < 1.0}
         <T.MeshBasicMaterial
-          color={urdf_viewer_state.jointColor}
+          color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor}
           {opacity}
           transparent={true} />
         {:else}
         <T.MeshBasicMaterial
-          color={urdf_viewer_state.jointColor} />
+          color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor} />
         {/if}
       </T.Mesh>
     {/if}
