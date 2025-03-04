@@ -10,7 +10,7 @@ export const urdf_viewer_state = $state<{
     edit: boolean // add TransformControls when we can edit the element
     continuousJoints: {[name: string]: number}
     revoluteJoints: {[name: string]: number}
-    editMode?: "translate" | "rotate" | "scale"
+    tool?: "translate" | "rotate" | "scale"
     visual: boolean
     collision: boolean
     collisionColor: string
@@ -27,7 +27,7 @@ export const urdf_viewer_state = $state<{
     backgroundColor: string
 }>({
     edit: true,
-    editMode: 'translate',
+    tool: 'translate',
     selectedLink: undefined,
     selectedJoint: undefined,
     robot: undefined,
