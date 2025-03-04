@@ -5,13 +5,12 @@
   import { onMount } from 'svelte';
 
   import { Canvas, T } from '@threlte/core';
-  import { Gizmo, OrbitControls } from '@threlte/extras';
+  import { Gizmo, Grid, OrbitControls } from '@threlte/extras';
   import UrdfThree from '$lib/components/UrdfThree.svelte';
   import ThreeStage from '$lib/components/ThreeStage.svelte';
 
   import { UrdfParser } from '$lib/UrdfParser';
 
-  import Grid from '$lib/components/Grid.svelte';
   import { radToEuler } from '$lib/helper';
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
   import { WebGLRenderer } from 'three';
@@ -57,7 +56,10 @@
   bind:innerWidth />
 
 <main class="main-content">
-  <div style:width={innerWidth - 250 + 'px'} style:height={innerHeight + 'px'}>
+  <div 
+    style:width={innerWidth - 250 + 'px'}
+    style:height={innerHeight + 'px'}
+    style:background-color={urdf_viewer_state.backgroundColor}>
     <Canvas
     createRenderer={(canvas) => {
       return new WebGLRenderer({
@@ -68,20 +70,27 @@
       })}}
       shadows>
 
-      <T.PointLight color="white" intensity={.2} position={[0, 5, 0]} />
-      <T.PointLight color="blue" intensity={0.5} position={[5, 5, 0]} />
-      <T.PointLight color="yellow" intensity={0.5} position={[-5, -5, 0]} />
-
       <T.PerspectiveCamera
         makeDefault
+        up={[0, 0, 1]}
+        forward={[1, 0, 0]}
         position={[.6, .6, .6]} fov={25}>
         <OrbitControls enableZoom={true}>
           <Gizmo />
         </OrbitControls>
       </T.PerspectiveCamera>
 
+      
+      <T.Group rotation={[-Math.PI/2, 0, 0]}>
+        <T.PointLight color="white" intensity={.25} position={[0, 1, 1]} />
+        <T.PointLight color="blue" intensity={0.25} position={[1, 1, 1]} />
+        <T.PointLight color="white" intensity={.25} position={[1, 0, 1]} />
+        <T.PointLight color="yellow" intensity={0.25} position={[-1, -1, 1]} />
+
+        <Grid cellSize={0.1} />
+      </T.Group>
+
       <ThreeStage preset_name="soft" />
-      <Grid />
 
       {#if urdf_viewer_state.robot}
         <UrdfThree {onselectionchange} />
@@ -113,15 +122,19 @@
     {/if}
     {#if urdf_viewer_state.revoluteJoints}
       <h3>Revolute Joints</h3>
-      {#each Object.entries(urdf_viewer_state.revoluteJoints) as [name, joint]}
+      {#each Object.entries(urdf_viewer_state.revoluteJoints) as [name, nr]}
         <input type="range" id={name}
-          min={radToEuler(joint.limit?.lower || 0)}
-          max={radToEuler(joint.limit?.upper || 2*Math.PI)}
-          step="1" value={radToEuler(joint.limit?.lower || 0)}
+          min={
+            radToEuler(urdf_viewer_state.robot?.joints[nr].limit?.lower || 0)}
+          max={
+            radToEuler(urdf_viewer_state.robot?.joints[nr].limit?.upper || 2*Math.PI)}
+          step="1" value={
+            radToEuler(urdf_viewer_state.robot?.joints[nr].limit?.lower || 0)}
           oninput={(e) => {
-            if (!e.target) {
+            if (!e.target || !urdf_viewer_state.robot) {
               return
             }
+            const joint = urdf_viewer_state.robot.joints[nr]
             const euler = e.target.value;
             const rad = euler * Math.PI / 180 - Math.PI;
             joint.rotation = [
@@ -217,6 +230,12 @@
       bind:value={urdf_viewer_state.collisionColor}
       type="color" />
     <label for="_urdf_collisioncolor">Collision color</label><br />
+
+    <input
+      id="_urdf_bgcolor"
+      bind:value={urdf_viewer_state.backgroundColor}
+      type="color" />
+    <label for="_urdf_bgcolor">Background color</label><br />
 
     <br />
     Selected:<br />

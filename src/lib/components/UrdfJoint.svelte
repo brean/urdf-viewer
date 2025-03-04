@@ -28,7 +28,8 @@
 
   let opacity = 0.7
 
-  const onclick = () => {
+  const onclick = (event: Event) => {
+    event.stopPropagation();
     urdf_viewer_state.selectedLink = undefined;
     urdf_viewer_state.selectedJoint = joint;
   }

@@ -24,8 +24,9 @@ export const urdf_viewer_state = $state<{
     jointIndicatorColor: string
     linkOpacity: number
     collisionOpacity: number
+    backgroundColor: string
 }>({
-    edit: false,
+    edit: true,
     editMode: 'translate',
     selectedLink: undefined,
     selectedJoint: undefined,
@@ -34,7 +35,7 @@ export const urdf_viewer_state = $state<{
     revoluteJoints: {},
     visual: true,
     collision: false,
-    collisionColor: "#deddda",
+    collisionColor: "#813d9c", // purple
     joints: true,
     jointNames: true,
     jointColor: "#62a0ea", // blue
@@ -44,5 +45,6 @@ export const urdf_viewer_state = $state<{
     linkOpacity: 1.0,
     highlightColor: "#ffa348", // orange
     visualOpacity: 1.0,
-    collisionOpacity: 0.7
+    collisionOpacity: 0.7,
+    backgroundColor: "#deddda" // gray
 });

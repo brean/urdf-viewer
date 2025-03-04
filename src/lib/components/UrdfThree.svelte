@@ -21,18 +21,11 @@
     onchange = undefined
   }: Props = $props();
   
-  // the axis in Three are different from urdf
-  if (!quaternion) {
-    const quat = new Quaternion();
-    quat.setFromAxisAngle(new Vector3(-1, 0, 0), Math.PI * 0.5);
-    quaternion = [quat.x, quat.y, quat.z, quat.w];
-  }
-
 // TODO: getRootLinks?
 </script>
 
 {#if urdf_viewer_state.robot}
-<T.Group {position} {quaternion}>
+<T.Group {position} >
   {#each getRootLinks(urdf_viewer_state.robot) as link}
     <UrdfLink {link} parentJoint={undefined}  />
   {/each}
