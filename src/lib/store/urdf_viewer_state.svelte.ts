@@ -46,5 +46,5 @@ export const urdf_viewer_state = $state<{
     highlightColor: "#ffa348", // orange
     visualOpacity: 1.0,
     collisionOpacity: 0.7,
-    backgroundColor: "#deddda" // gray
+    backgroundColor: "#241f31" // dark purple
 });

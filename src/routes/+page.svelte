@@ -46,6 +46,8 @@
     urdf_viewer_state.robot = robot;
   });
 
+  const jointvalues: {[name: string]: number} = $state({});
+
   let onselectionchange = (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => {
 
   }
@@ -74,18 +76,21 @@
         makeDefault
         up={[0, 0, 1]}
         forward={[1, 0, 0]}
+        eulerOrder={"XZY"}
         position={[.6, .6, .6]} fov={25}>
-        <OrbitControls enableZoom={true}>
+        <OrbitControls
+          enableZoom>
           <Gizmo />
         </OrbitControls>
       </T.PerspectiveCamera>
 
       
       <T.Group rotation={[-Math.PI/2, 0, 0]}>
-        <T.PointLight color="white" intensity={.25} position={[0, 1, 1]} />
-        <T.PointLight color="blue" intensity={0.25} position={[1, 1, 1]} />
-        <T.PointLight color="white" intensity={.25} position={[1, 0, 1]} />
-        <T.PointLight color="yellow" intensity={0.25} position={[-1, -1, 1]} />
+        <T.HemisphereLight
+          skycolor={0xB1E1FF}
+          groundColor={0xB97A20}
+          intensity={.2}
+        ></T.HemisphereLight>
 
         <Grid cellSize={0.1} />
       </T.Group>
@@ -103,13 +108,14 @@
     {#if urdf_viewer_state.robot && urdf_viewer_state.continuousJoints}
       <h3>Continuous Joints</h3>
       {#each Object.entries(urdf_viewer_state.continuousJoints) as [name, nr]}
-        <input type="range" id={name} min="0" max="360" step="1" value="180"
+        <input type="range" id={name} min="0" max="360" step="1"
+          bind:value={jointvalues[name]}
           oninput={(e) => {
             if (!e.target || !urdf_viewer_state.robot) {
               return
             }
             const joint = urdf_viewer_state.robot.joints[nr]
-            const euler = e.target.value;
+            const euler = jointvalues[name];
             const rad = euler * Math.PI / 180 - Math.PI;
             joint.rotation = [
               rad*joint.axis_xyz[0] + joint.origin_rpy[0],
@@ -119,6 +125,23 @@
           }}
         /><label for={name}>{name}</label>
       {/each}
+      <br />
+      <button onclick={() => {
+        console.log(urdf_viewer_state.continuousJoints)
+        for (let nr of Object.values(urdf_viewer_state.continuousJoints)) {
+          const joint = urdf_viewer_state.robot?.joints[nr]
+          console.log(joint)
+          if (!joint || !urdf_viewer_state.robot) {
+            continue
+          }
+          joint.rotation = [
+              joint.origin_rpy[0],
+              joint.origin_rpy[1],
+              joint.origin_rpy[2]]
+          jointvalues[joint.name] = 180;
+        }
+        
+      }}>reset</button>
     {/if}
     {#if urdf_viewer_state.revoluteJoints}
       <h3>Revolute Joints</h3>
@@ -248,6 +271,12 @@
     visuals: <br />
     {#if urdf_viewer_state.selectedLink.visual}
       {#each urdf_viewer_state.selectedLink.visual as visual}
+      &nbsp;-&nbsp;origin: {visual.origin_xyz} ({visual.type}) <br />
+      {/each}
+    {/if}
+    collisions: <br />
+    {#if urdf_viewer_state.selectedLink.collision}
+      {#each urdf_viewer_state.selectedLink.collision as visual}
       &nbsp;-&nbsp;origin: {visual.origin_xyz} ({visual.type}) <br />
       {/each}
     
