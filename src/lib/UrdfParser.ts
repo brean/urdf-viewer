@@ -67,10 +67,10 @@ export function getChildJoints(
   return childJoints
 }
 
-export function updateJoint(joint: IUrdfJoint) {
-  const origin = joint.elem.getElementsByTagName('origin')[0];
-  origin.setAttribute('xyz', joint.origin_xyz.join(' '))
-  origin.setAttribute('rpy', joint.origin_rpy.join(' '))
+export function updateJoint(posable: IUrdfJoint | IUrdfVisual) {
+  const origin = posable.elem.getElementsByTagName('origin')[0];
+  origin.setAttribute('xyz', posable.origin_xyz.join(' '))
+  origin.setAttribute('rpy', posable.origin_rpy.join(' '))
 }
 
 // render the 3D-model from this.
