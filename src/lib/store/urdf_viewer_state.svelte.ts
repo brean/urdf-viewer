@@ -50,7 +50,7 @@ export const urdf_viewer_state = $state<{
     visualOpacity: 1.0,
     collisionOpacity: 0.7,
     backgroundColor: "#241f31", // dark purple
-    translationSnap: 0.1,
-    scaleSnap: 0.1,
+    translationSnap: 0.001,
+    scaleSnap: 0.001,
     rotationSnap: 10,
 });
