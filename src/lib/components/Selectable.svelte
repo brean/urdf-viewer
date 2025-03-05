@@ -8,21 +8,21 @@ group-->
 	import type { Snippet } from "svelte";
   import type IUrdfJoint from "$lib/models/IUrdfJoint";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
-  import { updateJoint } from "$lib/UrdfParser";
+  import { updateOrigin } from "$lib/UrdfParser";
   import type IUrdfVisual from "$lib/models/IUrdfVisual";
 
   interface Props {
     origin: IUrdfJoint | IUrdfVisual
     children?: Snippet // renderable
     selected?: boolean
-    onchange?: (joint: IUrdfJoint) => void
+    ondatachange?: (event: any) => void
   }
 
   let {
     origin,
     children,
     selected = false,
-    onchange = undefined
+    ondatachange
   }: Props = $props();
 
   const updateData = (obj: Object3D) => {
@@ -32,7 +32,7 @@ group-->
       obj.rotation.y,
       obj.rotation.z,
     ]
-    updateJoint( origin );
+    updateOrigin( origin );
   }
 
   const onobjectChange = (event: any) => {
@@ -41,8 +41,8 @@ group-->
     }
     const obj = event.target.object;
     updateData(obj);
-    if (onchange) {
-      onchange(event)
+    if (ondatachange) {
+      ondatachange(event)
     }
   };
 

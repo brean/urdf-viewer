@@ -6,17 +6,15 @@
   import { getChildJoints } from "$lib/UrdfParser";
   import UrdfJoint from "./UrdfJoint.svelte";
   import { Billboard, Text } from "@threlte/extras";
-  import type IUrdfJoint from "$lib/models/IUrdfJoint";
-  import { Color } from "three";
 
   interface Props {
     link: IUrdfLink
-    parentJoint?: IUrdfJoint
+    ondatachange?: (event: any) => void
   }
 
   let {
     link,
-    parentJoint
+    ondatachange = undefined
   }: Props = $props();
 
 </script>
@@ -44,6 +42,7 @@ position can be defined by the child origin from a joint, -->
   {#if urdf_viewer_state.visual }
     {#each link.visual as visual}
       <UrdfVisual
+        {ondatachange}
         opacity={urdf_viewer_state.visualOpacity}
         {visual}
         {link} />  
@@ -53,6 +52,7 @@ position can be defined by the child origin from a joint, -->
   {#if urdf_viewer_state.collision }
     {#each link.collision as col}
       <UrdfVisual
+        {ondatachange}
         opacity={urdf_viewer_state.collisionOpacity}
         visual={col}
         color={urdf_viewer_state.collisionColor}
@@ -62,6 +62,7 @@ position can be defined by the child origin from a joint, -->
 
   {#each getChildJoints(urdf_viewer_state.robot, link) as child}
     <UrdfJoint
+      {ondatachange}
       joint={child} />
   {/each}
 {/if}

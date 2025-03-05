@@ -67,7 +67,7 @@ export function getChildJoints(
   return childJoints
 }
 
-export function updateJoint(posable: IUrdfJoint | IUrdfVisual) {
+export function updateOrigin(posable: IUrdfJoint | IUrdfVisual) {
   const origin = posable.elem.getElementsByTagName('origin')[0];
   origin.setAttribute('xyz', posable.origin_xyz.join(' '))
   origin.setAttribute('rpy', posable.origin_rpy.join(' '))

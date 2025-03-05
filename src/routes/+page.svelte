@@ -48,10 +48,6 @@
 
   const jointvalues: {[name: string]: number} = $state({});
 
-  let onselectionchange = (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => {
-
-  }
-
 </script>
 <svelte:window
   bind:innerHeight
@@ -98,7 +94,7 @@
       <ThreeStage preset_name="soft" />
 
       {#if urdf_viewer_state.robot}
-        <UrdfThree {onselectionchange} />
+        <UrdfThree />
       {/if}
     </Canvas>
   </div>
@@ -130,8 +126,7 @@
         console.log(urdf_viewer_state.continuousJoints)
         for (let nr of Object.values(urdf_viewer_state.continuousJoints)) {
           const joint = urdf_viewer_state.robot?.joints[nr]
-          console.log(joint)
-          if (!joint || !urdf_viewer_state.robot) {
+          if (!joint || !urdf_viewer_state.robot || !joint.name) {
             continue
           }
           joint.rotation = [
@@ -173,7 +168,8 @@
     <input
       type="range"
       oninput={() => {
-        urdf_viewer_state.visualOpacity = Number(urdf_viewer_state.visualOpacity);
+        urdf_viewer_state.visualOpacity = Number(
+          urdf_viewer_state.visualOpacity);
       }}
       min={0.1}
       max={1}
@@ -185,7 +181,8 @@
     <input
       type="range"
       oninput={() => {
-        urdf_viewer_state.collisionOpacity = Number(urdf_viewer_state.collisionOpacity);
+        urdf_viewer_state.collisionOpacity = Number(
+          urdf_viewer_state.collisionOpacity);
       }}
       min={0.1}
       max={1}

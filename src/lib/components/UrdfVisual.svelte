@@ -16,17 +16,17 @@
   interface Props {
     visual?: IUrdfVisual
     link: IUrdfLink
-    onselectionchange?: (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => void
     opacity: number
     color?: string
+    ondatachange?: (event: any) => void
   }
 
   let {
     visual,
     link,
-    onselectionchange = undefined,
     opacity = 1.0,
-    color = undefined
+    color = undefined,
+    ondatachange = undefined
   }: Props = $props();
 
   function getColor(): Color {
@@ -41,25 +41,17 @@
 
   const onclick = (event: Event) => {
     event.stopPropagation();
-    if (onselectionchange) {
-      onselectionchange(urdf_viewer_state.selectedLink, link);
-    }
     urdf_viewer_state.selectedLink = link;
     urdf_viewer_state.selectedJoint = undefined;
   }
 
   interactivity();  
-
-  const rotation = (rpy: [r: number, p: number, y: number]): [r: number, p: number, y: number] => {
-    return [
-      rpy[0] + Math.PI / 2, rpy[1], rpy[2]
-    ]
-  }
 </script>
 
 {#if visual}
 <Selectable
   origin={visual}
+  {ondatachange}
   selected={urdf_viewer_state.selectedLink == link}>
   {#if visual.type === 'mesh' && visual.geometry}
     {#if (visual.geometry as IUrdfMesh).type === 'stl'}

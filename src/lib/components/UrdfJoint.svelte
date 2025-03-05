@@ -11,14 +11,12 @@
 
   interface Props {
     joint: IUrdfJoint
-    onselectionchange?: (prev: IUrdfLink | undefined, next: IUrdfLink | undefined) => void
-    onchange?: (joint: IUrdfJoint) => void
+    ondatachange?: (joint: IUrdfJoint) => void
   }
 
   let {
     joint,
-    onselectionchange = undefined,
-    onchange = undefined
+    ondatachange = undefined
   }: Props = $props();
   
   const rotation = (rpy: [r: number, p: number, y: number]): [r: number, p: number, y: number] => {
@@ -67,6 +65,7 @@
 
 
   <Selectable
+    {ondatachange}
     origin={joint}
     selected={urdf_viewer_state.selectedJoint == joint}>
 
@@ -105,7 +104,7 @@
 
   
     {#if joint.child}
-      <UrdfLink link={joint.child} />
+      <UrdfLink link={joint.child} {ondatachange} />
     {/if}
   </Selectable>
 {/if}

@@ -66,6 +66,9 @@
           position={child.position ? child.position.toArray() : [0, 0, 0]}
           material={child.material}
           {onclick} >
+          {#if !child.material && color}
+            <T.MeshLambertMaterial {color} />
+          {/if}
         </T.Mesh>
         {/each}
       </T.Group>
