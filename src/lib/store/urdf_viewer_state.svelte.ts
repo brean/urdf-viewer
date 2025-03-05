@@ -1,7 +1,7 @@
 import type IUrdfJoint from "$lib/models/IUrdfJoint"
 import type IUrdfLink from "$lib/models/IUrdfLink"
 import type IUrdfRobot from "$lib/models/IUrdfRobot"
-import { Color } from "three";
+
 
 export const urdf_viewer_state = $state<{
     selectedLink?: IUrdfLink
@@ -25,6 +25,9 @@ export const urdf_viewer_state = $state<{
     linkOpacity: number
     collisionOpacity: number
     backgroundColor: string
+    translationSnap: number
+    scaleSnap: number
+    rotationSnap: number
 }>({
     edit: false,
     tool: 'translate',
@@ -46,5 +49,8 @@ export const urdf_viewer_state = $state<{
     highlightColor: "#ffa348", // orange
     visualOpacity: 1.0,
     collisionOpacity: 0.7,
-    backgroundColor: "#241f31" // dark purple
+    backgroundColor: "#241f31", // dark purple
+    translationSnap: 0.1,
+    scaleSnap: 0.1,
+    rotationSnap: 10,
 });
