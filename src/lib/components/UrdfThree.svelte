@@ -12,7 +12,7 @@
   }
   let {
     position = [0, 0, 0],
-    quaternion,
+    quaternion = [0, 0, 0, 1],
     ondatachange = undefined
   }: Props = $props();
   
