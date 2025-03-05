@@ -50,6 +50,9 @@ group-->
 </script>
 {#if selected && urdf_viewer_state.edit }
 <TransformControls
+  translationSnap={urdf_viewer_state.translationSnap}
+  scaleSnap={urdf_viewer_state.scaleSnap}
+  rotationSnap={Math.PI / urdf_viewer_state.rotationSnap}
   position={origin.origin_xyz}
   rotation={origin.origin_rpy}
   mode={urdf_viewer_state.tool}
