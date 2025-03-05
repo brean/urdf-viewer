@@ -1,5 +1,4 @@
 import DAE from "./components/DAE.svelte";
-import Grid from "./components/Grid.svelte";
 import STL from "./components/STL.svelte";
 import Selectable from "./components/Selectable.svelte";
 import ThreeStage from "./components/ThreeStage.svelte";
@@ -20,7 +19,7 @@ import type IUrdfMesh from "./models/IUrdfMesh";
 import type IUrdfRobot from "./models/IUrdfRobot";
 import type IUrdfVisual from "./models/IUrdfVisual";
 
-export { DAE, Grid, STL, ThreeStage, UrdfJoint, UrdfThree, 
+export { DAE, STL, ThreeStage, UrdfJoint, UrdfThree, 
     UrdfVisual, Selectable,
     urdf_viewer_state, UrdfParser, getRootJoints, getChildJoints,
     xyzFromString, rpyFromString, rgbaFromString, numberArrayToColor, numberStringToArray,radToEuler };
