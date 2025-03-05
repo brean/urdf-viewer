@@ -7,6 +7,7 @@
   import UrdfLink from "./UrdfLink.svelte";
   import { BufferGeometry, Color, Vector3 } from "three";
   import { Billboard, interactivity, MeshLineGeometry, Text } from "@threlte/extras";
+  import Selectable from "./Selectable.svelte";
 
   interface Props {
     joint: IUrdfJoint
@@ -65,9 +66,9 @@
   {/if}
 
 
-  <T.Group
-    rotation={joint.rotation}
-    position={joint.origin_xyz}>
+  <Selectable
+    origin={joint}
+    selected={urdf_viewer_state.selectedJoint == joint}>
 
     {#if urdf_viewer_state.joints }
       <T.Line>
@@ -81,29 +82,30 @@
         />
       </T.Line>
 
-      <T.Mesh
-        {onclick}
-        rotation={rotation([0, 0, 0])}>
-        <!-- TODO: default to z-up -->
-        <!-- cylinder are rotated 90° in Three compared to urdf -->
-        <T.CylinderGeometry
-          args={[0.004, 0.004, 0.03]}
-        />
-        {#if opacity < 1.0}
-        <T.MeshBasicMaterial
-          color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor}
-          {opacity}
-          transparent={true} />
-        {:else}
-        <T.MeshBasicMaterial
-          color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor} />
-        {/if}
-      </T.Mesh>
+        <T.Mesh
+          {onclick}
+          rotation={rotation([0, 0, 0])}>
+          <!-- TODO: default to z-up -->
+          <!-- cylinder are rotated 90° in Three compared to urdf -->
+          <T.CylinderGeometry
+            args={[0.004, 0.004, 0.03]}
+          />
+          {#if opacity < 1.0}
+          <T.MeshBasicMaterial
+            color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor}
+            {opacity}
+            transparent={true} />
+          {:else}
+          <T.MeshBasicMaterial
+            color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor} />
+          {/if}
+        </T.Mesh>
+      
     {/if}
 
   
     {#if joint.child}
       <UrdfLink link={joint.child} />
     {/if}
-  </T.Group>
+  </Selectable>
 {/if}

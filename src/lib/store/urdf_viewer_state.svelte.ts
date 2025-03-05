@@ -26,7 +26,7 @@ export const urdf_viewer_state = $state<{
     collisionOpacity: number
     backgroundColor: string
 }>({
-    edit: true,
+    edit: false,
     tool: 'translate',
     selectedLink: undefined,
     selectedJoint: undefined,

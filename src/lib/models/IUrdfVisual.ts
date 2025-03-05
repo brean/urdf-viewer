@@ -11,5 +11,4 @@ export default interface IUrdfVisual {
   color_rgba?: [r: number, g: number, b: number, a: number];
   // XML Element
   elem: Element;
-  rotation: [x: number, y: number, z: number]
 }

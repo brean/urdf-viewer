@@ -11,6 +11,7 @@
   import type IUrdfBox from "../models/IUrdfBox";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
   import { Color } from "three";
+  import Selectable from "./Selectable.svelte";
 
   interface Props {
     visual?: IUrdfVisual
@@ -57,13 +58,14 @@
 </script>
 
 {#if visual}
+<Selectable
+  origin={visual}
+  selected={urdf_viewer_state.selectedLink == link}>
   {#if visual.type === 'mesh' && visual.geometry}
     {#if (visual.geometry as IUrdfMesh).type === 'stl'}
       <STL
         {onclick}
         filename={(visual.geometry as IUrdfMesh).filename}
-        position={visual.origin_xyz || [0, 0, 0]}
-        rotation={visual.origin_rpy || [0, 0, 0]}
         color={getColor()}
         {opacity}
         scale={(visual.geometry as IUrdfMesh).scale || [1, 1, 1]} />
@@ -71,17 +73,13 @@
       <DAE
         {onclick}
         filename={(visual.geometry as IUrdfMesh).filename}
-        position={visual.origin_xyz || [0, 0, 0]}
-        rotation={visual.origin_rpy || [0, 0, 0]}
         color={getColor()}
         scale={(visual.geometry as IUrdfMesh).scale || [1, 1, 1]} />
     {/if}
   {:else}
     {#if visual.type === 'cylinder'}
       <T.Mesh castShadow receiveShadow
-        {onclick}
-        position={visual.origin_xyz || [0, 0, 0]}
-        rotation={rotation(visual.origin_rpy || [0, 0, 0])}>
+        {onclick}>
         <!-- TODO: default to z-up -->
         <!-- cylinder are rotated 90° in Three compared to urdf -->
         <T.CylinderGeometry 
@@ -99,9 +97,7 @@
     {:else if visual.type === 'box'}
       <T.Mesh castShadow receiveShadow
         scale={(visual.geometry as IUrdfBox).size || [1, 1, 1]}
-        {onclick}
-        position={visual.origin_xyz || [0, 0, 0]}
-        rotation={visual.origin_rpy || [0, 0, 0]}>
+        {onclick}>
         <T.BoxGeometry />
         {#if opacity < 1.0}
         <T.MeshBasicMaterial color={getColor()} {opacity} transparent={true} />
@@ -111,4 +107,5 @@
       </T.Mesh>
     {/if}
   {/if}
+</Selectable>
 {/if}
