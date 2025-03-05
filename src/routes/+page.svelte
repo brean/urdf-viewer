@@ -123,7 +123,6 @@
       {/each}
       <br />
       <button onclick={() => {
-        console.log(urdf_viewer_state.continuousJoints)
         for (let nr of Object.values(urdf_viewer_state.continuousJoints)) {
           const joint = urdf_viewer_state.robot?.joints[nr]
           if (!joint || !urdf_viewer_state.robot || !joint.name) {
