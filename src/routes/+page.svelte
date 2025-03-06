@@ -13,8 +13,10 @@
 
   import { radToEuler } from '$lib/helper';
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
-  import { WebGLRenderer } from 'three';
+  import { Object3D, Vector3, WebGLRenderer } from 'three';
   import type { IUrdfLink } from '$lib';
+
+  Object3D.DEFAULT_UP = new Vector3(0,0,1);
 
   let innerHeight = $state(0);
   let innerWidth = $state(0);
@@ -70,9 +72,6 @@
 
       <T.PerspectiveCamera
         makeDefault
-        up={[0, 0, 1]}
-        forward={[1, 0, 0]}
-        eulerOrder={"XZY"}
         position={[.6, .6, .6]} fov={25}>
         <OrbitControls
           enableZoom>

@@ -19,12 +19,6 @@
     ondatachange = undefined
   }: Props = $props();
   
-  const rotation = (rpy: [r: number, p: number, y: number]): [r: number, p: number, y: number] => {
-    return [
-      rpy[0] + Math.PI / 2, rpy[1], rpy[2]
-    ]
-  }
-
   let opacity = 0.7
 
   const onclick = (event: Event) => {
@@ -83,7 +77,7 @@
 
         <T.Mesh
           {onclick}
-          rotation={rotation([0, 0, 0])}>
+          rotation={[Math.PI / 2, 0, 0]}>
           <!-- TODO: default to z-up -->
           <!-- cylinder are rotated 90° in Three compared to urdf -->
           <T.CylinderGeometry

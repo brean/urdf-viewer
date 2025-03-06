@@ -71,6 +71,7 @@
   {:else}
     {#if visual.type === 'cylinder'}
       <T.Mesh castShadow receiveShadow
+        rotation={[Math.PI / 2, 0, 0]}
         {onclick}>
         <!-- TODO: default to z-up -->
         <!-- cylinder are rotated 90° in Three compared to urdf -->
