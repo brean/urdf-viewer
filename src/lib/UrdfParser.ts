@@ -90,9 +90,6 @@ export class UrdfParser {
   // folder where the model-meshes are stored 
   prefix: string = '';
 
-  // the DOM element holding the XML, so we can work non-destructive
-  xmlRobotNode: Element | undefined;
-
   constructor(filename: string, prefix:string = '') {
     this.filename = filename;
     this.prefix = prefix;
@@ -114,8 +111,8 @@ export class UrdfParser {
 
   fromString(data: string): IUrdfRobot {
     this.reset();
-    let domElem = new window.DOMParser().parseFromString(data, "text/xml")
-    this.xmlRobotNode = domElem.documentElement;
+    let domElem = new window.DOMParser().parseFromString(data, "text/xml");
+    this.robot.elem = domElem.documentElement;
     return this.parseRobotXMLNode(domElem.documentElement)
   }
 
@@ -175,10 +172,10 @@ export class UrdfParser {
   }
 
   getLinkByName(name: string): Element | undefined {
-    if (!this.xmlRobotNode) {
+    if (!this.robot.elem) {
       return undefined;
     }
-    const xmlLinks = this.xmlRobotNode.getElementsByTagName('link');
+    const xmlLinks = this.robot.elem.getElementsByTagName('link');
     for (let i = 0; i < xmlLinks.length; i++) {
       const linkXmlNode = xmlLinks[i];
       if (linkXmlNode.hasAttribute('name')) {
@@ -440,6 +437,6 @@ export class UrdfParser {
   /** create XML-string from URDF-description */
   getURDFXML(): string {
     const xmldef = '<?xml version="1.0" ?>\n';
-    return this.xmlRobotNode ? xmldef + this.xmlRobotNode.outerHTML : '';
+    return this.robot.elem ? xmldef + this.robot.elem.outerHTML : '';
   }
 }
