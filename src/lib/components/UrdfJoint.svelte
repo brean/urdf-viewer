@@ -63,20 +63,22 @@
     origin={joint}
     selected={urdf_viewer_state.selectedJoint == joint}>
 
-    {#if urdf_viewer_state.joints }
-      <T.Group
-        rotation={joint.rotation || [0, 0, 0]}>
+    <T.Group
+      rotation={joint.rotation || [0, 0, 0]}>
+      {#if urdf_viewer_state.joints }
 
-      <T.Line>
-        <MeshLineGeometry
-        {onclick}
-          points={[new Vector3(0, 0, 0), new Vector3(0, -.02, 0)]} />
-        <T.LineBasicMaterial
-          color={
-            urdf_viewer_state.jointIndicatorColor
-          }
-        />
-      </T.Line>
+        <T.Line>
+          <MeshLineGeometry
+          {onclick}
+            points={[
+              new Vector3(0, 0, 0),
+              new Vector3(0, -.02, 0)]} />
+          <T.LineBasicMaterial
+            color={
+              urdf_viewer_state.jointIndicatorColor
+            }
+          />
+        </T.Line>
 
         <T.Mesh
           {onclick}
@@ -96,12 +98,12 @@
             color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor} />
           {/if}
         </T.Mesh>
-      </T.Group>
-    {/if}
+      {/if}
 
   
-    {#if joint.child}
-      <UrdfLink link={joint.child} {ondatachange} />
-    {/if}
+      {#if joint.child}
+        <UrdfLink link={joint.child} {ondatachange} />
+      {/if}
+    </T.Group>
   </Selectable>
 {/if}
