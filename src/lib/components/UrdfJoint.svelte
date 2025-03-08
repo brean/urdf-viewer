@@ -64,6 +64,9 @@
     selected={urdf_viewer_state.selectedJoint == joint}>
 
     {#if urdf_viewer_state.joints }
+      <T.Group
+        rotation={joint.rotation || [0, 0, 0]}>
+
       <T.Line>
         <MeshLineGeometry
         {onclick}
@@ -93,7 +96,7 @@
             color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor} />
           {/if}
         </T.Mesh>
-      
+      </T.Group>
     {/if}
 
   

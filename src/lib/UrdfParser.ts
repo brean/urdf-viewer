@@ -423,7 +423,7 @@ export class UrdfParser {
           type: jointXmlNode.getAttribute('type') || undefined,
           origin_rpy: rpy,
           origin_xyz: xyz,
-          rotation: Object.assign([], rpy),
+          rotation: [0, 0, 0],
           axis_xyz: axis_xyz,
           parent: parent,
           child: child,

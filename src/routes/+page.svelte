@@ -14,7 +14,6 @@
   import { radToEuler } from '$lib/helper';
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
   import { Object3D, Vector3, WebGLRenderer } from 'three';
-  import type { IUrdfLink } from '$lib';
 
   Object3D.DEFAULT_UP = new Vector3(0,0,1);
 
@@ -113,10 +112,9 @@
             const euler = jointvalues[name];
             const rad = euler * Math.PI / 180 - Math.PI;
             joint.rotation = [
-              rad*joint.axis_xyz[0] + joint.origin_rpy[0],
-              rad*joint.axis_xyz[1] + joint.origin_rpy[1],
-              rad*joint.axis_xyz[2] + joint.origin_rpy[2]];
-            //console.log(joint.rotation);
+              rad * joint.axis_xyz[0],
+              rad * joint.axis_xyz[1],
+              rad * joint.axis_xyz[2]];
           }}
         /><label for={name}>{name}</label>
       {/each}
@@ -127,10 +125,7 @@
           if (!joint || !urdf_viewer_state.robot || !joint.name) {
             continue
           }
-          joint.rotation = [
-              joint.origin_rpy[0],
-              joint.origin_rpy[1],
-              joint.origin_rpy[2]]
+          joint.rotation = [0, 0, 0]
           jointvalues[joint.name] = 180;
         }
         
@@ -154,9 +149,9 @@
             const euler = e.target.value;
             const rad = euler * Math.PI / 180 - Math.PI;
             joint.rotation = [
-              rad * joint.axis_xyz[0] + joint.origin_rpy[0],
-              rad * joint.axis_xyz[1] + joint.origin_rpy[1],
-              rad * joint.axis_xyz[2] + joint.origin_rpy[2]];
+              rad * joint.axis_xyz[0],
+              rad * joint.axis_xyz[1],
+              rad * joint.axis_xyz[2]];
           }}
         /><label for={name}>{name}</label>
       
