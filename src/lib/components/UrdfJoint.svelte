@@ -72,7 +72,7 @@
 
         <T.Line>
           <MeshLineGeometry
-          {onclick}
+            {onclick}
             points={[
               new Vector3(0, 0, 0),
               new Vector3(0, -.02, 0)]} />
@@ -102,8 +102,6 @@
           {/if}
         </T.Mesh>
       {/if}
-
-  
     </T.Group>
   </Selectable>
 {/if}

@@ -17,6 +17,15 @@
     ondatachange = undefined
   }: Props = $props();
 
+  function billboardPos(): [x: number, y: number, z: number] {
+    if (link.collision && link.collision.length > 0) {
+      return link.collision[0].origin_xyz;
+    }
+    if (link.visual && link.visual.length > 0) {
+      return link.visual[0].origin_xyz;
+    }
+    return [0, 0, 0]
+  }
 </script>
 
 <!-- 
@@ -30,7 +39,7 @@ position can be defined by the child origin from a joint, -->
   {@html `<!-- Link ${link.name} -->`}
 
   {#if urdf_viewer_state.linkNames }
-  <Billboard position={[0, 0, 0]}>
+  <Billboard position={billboardPos()}>
     <Text
       anchorY={-.2}
       color={urdf_viewer_state.selectedLink == link ? urdf_viewer_state.highlightColor : urdf_viewer_state.linkColor}

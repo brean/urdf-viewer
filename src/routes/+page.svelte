@@ -129,7 +129,7 @@
           jointvalues[joint.name] = 180;
         }
         
-      }}>reset</button>
+      }}>reset</button><br />
     {/if}
     {#if urdf_viewer_state.revoluteJoints}
       <h3>Revolute Joints</h3>
@@ -197,22 +197,25 @@
       id="_urdf_collision"
       bind:checked={urdf_viewer_state.collision}>
     <label for="_urdf_collision">Collision</label><br />
-    <label for="_urdf_links">Links</label><br />
+
     <input
       type="checkbox"
       id="_urdf_linknames"
       bind:checked={urdf_viewer_state.linkNames}>
     <label for="_urdf_linknames">Link names</label><br />
+
     <input
       type="checkbox"
       id="_urdf_joints"
       bind:checked={urdf_viewer_state.joints}>
     <label for="_urdf_joints">Joints</label><br />
+
     <input
       type="checkbox"
       id="_urdf_jointnames"
       bind:checked={urdf_viewer_state.jointNames}>
     <label for="_urdf_jointnames">Joint names</label><br />
+
     <!-- colors -->
     <input
       id="_urdf_jointcolor"
@@ -250,7 +253,8 @@
       type="color" />
     <label for="_urdf_bgcolor">Background color</label><br />
 
-    <br />
+    <hr />
+    
     Selected:<br />
     {#if urdf_viewer_state.selectedJoint}
       joint: {urdf_viewer_state.selectedJoint.name}<br />
@@ -273,6 +277,7 @@
     {/if}
     {/if}
   </div>
+
 </main>
 
 <style>
