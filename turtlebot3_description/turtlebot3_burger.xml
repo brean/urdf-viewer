@@ -40,10 +40,6 @@
     <color rgba="1.0 1.0 1.0 1.0" />
   </material>
 
-  <material name="trans_red">
-    <color rgba="1.0 0.0 0.0 0.5" />
-  </material>
-
   <link name="base_footprint"/>
 
   <joint name="base_joint" type="fixed">
