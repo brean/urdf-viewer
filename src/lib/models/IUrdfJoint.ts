@@ -4,7 +4,7 @@ import type IUrdfLink from "./IUrdfLink"
 
 export default interface IUrdfJoint {
   name?: string
-  type?: string
+  type?: 'revolute' | 'continuous' | 'prismatic' | 'fixed' | 'floating' | 'planar'
   // rpy = roll, pitch, yaw (values between -pi and +pi)
   origin_rpy: [roll: number, pitch: number, yaw: number]
   origin_xyz: [x: number, y: number, z: number]
@@ -12,14 +12,33 @@ export default interface IUrdfJoint {
   rotation: [x: number, y: number, z: number]
   parent: IUrdfLink
   child: IUrdfLink
-  // axis for revolute and continuous joints
-  axis_xyz: [x: number, y: number, z: number]
+  // axis for revolute and continuous joints defaults to (1,0,0)
+  axis_xyz?: [x: number, y: number, z: number]
+  calibration?: {
+    rising?: any,  // TODO
+    falling?: any
+  }
+  dynamics?: {
+    damping?: number
+    friction?: number
+  }
   // only for revolute joints
   limit?: {
-    lower: number
-    upper: number
+    lower?: number
+    upper?: number
     effort: number
     velocity: number
+  }
+  mimic?: {
+    joint: string
+    multiplier?: number
+    offset?: number
+  }
+  safety_controller?: {
+    soft_lower_limit?: number
+    soft_upper_limit?: number
+    k_position?: number
+    k_velocity: number
   }
   elem: Element
 }
