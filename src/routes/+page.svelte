@@ -22,7 +22,7 @@
 
   let prefix = page.url.href;
   prefix = prefix.endsWith('/') ? prefix.substring(0, prefix.length-1) : prefix;
-  const robot_name = "turtlebot3_burger";
+  const robot_name = "turtlebot3_waffle";
 
   const filename = `turtlebot3_description/${robot_name}.xml`;
   const parser = new UrdfParser(`${prefix}/${filename}`, prefix);

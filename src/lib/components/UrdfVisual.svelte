@@ -66,6 +66,7 @@
         {onclick}
         filename={(visual.geometry as IUrdfMesh).filename}
         color={getColor()}
+        {opacity}
         scale={(visual.geometry as IUrdfMesh).scale || [1, 1, 1]} />
     {/if}
   {:else}

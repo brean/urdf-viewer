@@ -1,6 +1,6 @@
 <script lang="ts">
   import { T, type AsyncWritable, useLoader } from '@threlte/core';
-  import { Color, Mesh, type EulerTuple } from 'three';
+  import { Color, Mesh, Vector3, type EulerTuple } from 'three';
   import { ColladaLoader, type Collada } from 'three/examples/jsm/loaders/ColladaLoader';
 
   interface Props {
@@ -10,6 +10,7 @@
     position?: [x: number, y: number, z: number]
     rotation?: [x: number, y: number, z: number]
     onclick?: (event: Event) => void
+    opacity: number
   }
   let {
     filename,
@@ -18,14 +19,15 @@
     scale = [1, 1, 1],
     rotation = [0, 0, 0],
     position = [0, 0, 0],
-    onclick = () => {}
+    onclick = () => {},
+    opacity = 1.0
   }: Props = $props();
 
   let sceneScale: [x: number, y: number, z: number] = $state([1, 1, 1]);
   let scenePosition: [x: number, y: number, z: number] = $state([0, 0, 0]);
   let sceneRotation: EulerTuple | undefined = $state([0, 0, 0]);
-  let sceneUp: [x: number, y: number, z: number] = $state([0, 0, 0]);
   let objs: Mesh[] = $state([]);
+  const sceneUp: [x: number, y: number, z: number] = [Math.PI / 2, -Math.PI / 2, -Math.PI / 2];
 
   const loader = useLoader(ColladaLoader);
 
@@ -38,12 +40,7 @@
     sceneScale = scene.scale.toArray();
     scenePosition = scene.position.toArray();
     sceneRotation = scene.rotation ? scene.rotation.toArray() : sceneRotation;
-    sceneUp = scene.up.toArray();
-    
-    sceneUp[0] *= Math.PI / 2;
-    sceneUp[1] *= Math.PI / 2;
-    sceneUp[2] *= Math.PI / 2;
-    
+
     let _objs: Mesh[] = []
     d.scene.traverse((obj) => {
       if (obj.type === 'Mesh') {
@@ -66,8 +63,12 @@
           position={child.position ? child.position.toArray() : [0, 0, 0]}
           material={child.material}
           {onclick} >
-          {#if !child.material && color}
-            <T.MeshLambertMaterial {color} />
+          {#if color}
+            {#if opacity < 1.0}
+              <T.MeshLambertMaterial {color} {opacity} transparent={true} />
+            {:else}
+              <T.MeshLambertMaterial {color} />
+            {/if}
           {/if}
         </T.Mesh>
         {/each}
