@@ -2,10 +2,9 @@
   // at a joint one or multiple links can connect
   import type IUrdfJoint from "../models/IUrdfJoint";
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
-  import type IUrdfLink from "$lib/models/IUrdfLink";
   import { T } from "@threlte/core";
   import UrdfLink from "./UrdfLink.svelte";
-  import { BufferGeometry, Color, Vector3 } from "three";
+  import { Vector3 } from "three";
   import { Billboard, interactivity, MeshLineGeometry, Text } from "@threlte/extras";
   import Selectable from "./Selectable.svelte";
 
@@ -65,6 +64,10 @@
 
     <T.Group
       rotation={joint.rotation || [0, 0, 0]}>
+      {#if joint.child}
+        <UrdfLink link={joint.child} {ondatachange} />
+      {/if}
+
       {#if urdf_viewer_state.joints }
 
         <T.Line>
@@ -101,9 +104,6 @@
       {/if}
 
   
-      {#if joint.child}
-        <UrdfLink link={joint.child} {ondatachange} />
-      {/if}
     </T.Group>
   </Selectable>
 {/if}
