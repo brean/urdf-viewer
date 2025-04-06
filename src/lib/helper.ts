@@ -1,4 +1,5 @@
 import { Color } from "three";
+import { urdf_viewer_state } from "./store/urdf_viewer_state.svelte";
 
 export function xyzFromString(child: Element): [x: number, y: number, z: number] | undefined {
   const arr = numberStringToArray(child, 'xyz');
@@ -50,4 +51,10 @@ export function numberArrayToColor(col?: number[]): Color {
     return new Color('white')
   }
   return new Color(col[0], col[1], col[2]);
+}
+
+export function textScale(height: number): number {
+  return Math.max(
+    (urdf_viewer_state.zoom / urdf_viewer_state.initialZoom) * height,
+    height);
 }

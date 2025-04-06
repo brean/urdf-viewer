@@ -7,6 +7,7 @@
   import { Vector3 } from "three";
   import { Billboard, interactivity, MeshLineGeometry, Text } from "@threlte/extras";
   import Selectable from "./Selectable.svelte";
+  import { textScale } from "$lib/helper";
 
   interface Props {
     joint: IUrdfJoint
@@ -40,8 +41,8 @@
         position.y={joint.origin_xyz[1]}
         position.z={joint.origin_xyz[2]}>
       <Text
+        scale={textScale(urdf_viewer_state.nameHeight)}
         color={urdf_viewer_state.selectedJoint == joint ? urdf_viewer_state.highlightColor : urdf_viewer_state.jointColor}
-        scale={[0.1, 0.1, 0.1]}
         text={joint.name}></Text>
     </Billboard>
   {/if}

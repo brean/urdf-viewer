@@ -13,12 +13,15 @@
 
   import { radToEuler } from '$lib/helper';
   import { urdf_viewer_state } from "$lib/store/urdf_viewer_state.svelte";
-  import { Object3D, Vector3, WebGLRenderer } from 'three';
+  import { Object3D, PerspectiveCamera, Vector3, WebGLRenderer } from 'three';
 
   Object3D.DEFAULT_UP = new Vector3(0,0,1);
 
   let innerHeight = $state(0);
   let innerWidth = $state(0);
+
+  let cam = $state<PerspectiveCamera>()
+  let controls = $state()
 
   let prefix = page.url.href;
   prefix = prefix.endsWith('/') ? prefix.substring(0, prefix.length-1) : prefix;
@@ -71,8 +74,18 @@
 
       <T.PerspectiveCamera
         makeDefault
-        position={[.6, .6, .6]} fov={25}>
+        position={[.6, .6, .6]}
+        fov={25}
+        bind:ref={cam}>
         <OrbitControls
+          onchange={() => {
+            if (!controls || !cam) {
+              return;
+            }
+            const pos = cam.position;
+            urdf_viewer_state.zoom = pos.distanceTo(controls.target);
+          }}
+          bind:ref={controls}
           enableZoom>
           <Gizmo />
         </OrbitControls>

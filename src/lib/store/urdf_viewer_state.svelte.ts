@@ -28,6 +28,9 @@ export const urdf_viewer_state = $state<{
     translationSnap: number
     scaleSnap: number
     rotationSnap: number
+    initialZoom: number
+    zoom: number
+    nameHeight: number
 }>({
     edit: false,
     tool: 'translate',
@@ -52,5 +55,8 @@ export const urdf_viewer_state = $state<{
     backgroundColor: "#241f31", // dark purple
     translationSnap: 0.001,
     scaleSnap: 0.001,
-    rotationSnap: 10,
+    rotationSnap: 1,
+    initialZoom: 1.3,
+    zoom: 1.3,
+    nameHeight: 0.12
 });

@@ -6,6 +6,7 @@
   import { getChildJoints } from "$lib/UrdfParser";
   import UrdfJoint from "./UrdfJoint.svelte";
   import { Billboard, Text } from "@threlte/extras";
+  import { textScale } from "$lib/helper";
 
   interface Props {
     link: IUrdfLink
@@ -43,7 +44,7 @@ position can be defined by the child origin from a joint, -->
     <Text
       anchorY={-.2}
       color={urdf_viewer_state.selectedLink == link ? urdf_viewer_state.highlightColor : urdf_viewer_state.linkColor}
-      scale={[0.1, 0.1, 0.1]}
+      scale={textScale(urdf_viewer_state.nameHeight)}
       text={link.name}></Text>
   </Billboard>
   {/if}
