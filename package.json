@@ -2,7 +2,7 @@
 	"name": "urdf-viewer",
 	"author": "Andreas Bresser <self@andreasbresser.de>",
 	"license": "BSD-3-Clause",
-	"version": "0.2.7",
+	"version": "0.2.8",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -23,7 +23,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"overrides": {
-  		"cookie": "^1.0.2"
+		"cookie": "^1.0.2"
 	},
 	"dependencies": {
 		"@sveltejs/adapter-auto": "^6.0.0",
@@ -31,15 +31,14 @@
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.20.8",
 		"@sveltejs/package": "^2.3.11",
-		"@threlte/core": "^8.0.1",
-		"@threlte/extras": "^9.0.1",
-		"@types/three": "^0.173.0",
-		"cookie": "^1.0.2",
+		"@threlte/core": "^8.0.2",
+		"@threlte/extras": "^9.1.4",
+		"@types/three": "^0.175.0",
 		"publint": "^0.3.2",
-		"svelte": "^5.0.0",
+		"svelte": "^5.26.2",
 		"svelte-check": "^4.0.4",
 		"svelte-sequential-preprocessor": "^2.0.2",
-		"three": "^0.173.0",
+		"three": "^0.175.0",
 		"typescript": "^5.6.3",
 		"vite": "^6.0.0"
 	},
