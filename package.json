@@ -22,15 +22,19 @@
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
+	"overrides": {
+  		"cookie": "^1.0.2"
+	},
 	"dependencies": {
-		"@sveltejs/adapter-auto": "^4.0.0",
+		"@sveltejs/adapter-auto": "^6.0.0",
 		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/adapter-static": "^3.0.8",
-		"@sveltejs/kit": "^2.16.0",
-		"@sveltejs/package": "^2.3.10",
+		"@sveltejs/kit": "^2.20.8",
+		"@sveltejs/package": "^2.3.11",
 		"@threlte/core": "^8.0.1",
 		"@threlte/extras": "^9.0.1",
 		"@types/three": "^0.173.0",
+		"cookie": "^1.0.2",
 		"publint": "^0.3.2",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.4",
