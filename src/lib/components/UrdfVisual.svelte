@@ -3,6 +3,7 @@
   import type IUrdfVisual from "../models/IUrdfVisual";
   import { numberArrayToColor } from "../helper";
   import DAE from "./DAE.svelte";
+  import OBJ from "./OBJ.svelte";
   import STL from "./STL.svelte";
   import { T } from "@threlte/core";
   import { interactivity } from "@threlte/extras";
@@ -56,6 +57,13 @@
   {#if visual.type === 'mesh' && visual.geometry}
     {#if (visual.geometry as IUrdfMesh).type === 'stl'}
       <STL
+        {onclick}
+        filename={(visual.geometry as IUrdfMesh).filename}
+        color={getColor()}
+        {opacity}
+        scale={(visual.geometry as IUrdfMesh).scale || [1, 1, 1]} />
+      {:else if (visual.geometry as IUrdfMesh).type === 'obj'}
+      <OBJ
         {onclick}
         filename={(visual.geometry as IUrdfMesh).filename}
         color={getColor()}
